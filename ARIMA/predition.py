@@ -1,9 +1,6 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-from statsmodels.graphics.tsaplots import plot_acf,plot_pacf#自相关图、偏自相关图
 from statsmodels.tsa.stattools import  adfuller as ADF#平稳性检验
 from statsmodels.stats.diagnostic import  acorr_ljungbox#白噪声检验
 from statsmodels.tsa.arima_model import ARIMA
@@ -13,9 +10,9 @@ sale=pd.read_csv('./maxmin.csv',index_col=0)
 
 
 #把里面转换类型为浮点型
-#sale.tmax=sale.tmax.astype('float')
-#sale.tmin=sale.tmax.astype('float')
-
+sale.tmax=sale.tmax.astype('float')
+sale.tmin=sale.tmin.astype('float')
+sale.tmid=sale.tmid.astype('float')
 
 #原始序列的检验
 """时序图"""
@@ -91,15 +88,84 @@ if tmid_d==0:
 #plot_pacf(d1_sale,lags=20).show()
 #ACF截尾，PACF拖尾，用MA方法拟合更好，(pdq)=(011)
 
+"""max部分"""
+pmax=int(len(d_sale_max)/10)
+qmax=int(len(d_sale_max)/10)
+
+#得到一个二维矩阵，取[p,q]值最小的参数对
+bic_matrix=[]
+for p in range(pmax+1):
+    tmp=[]
+    for q in range(qmax+1):
+        try:
+            tmp.append(ARIMA(sale_max,(p,tmax_d,q)).fit().bic)
+        except:
+            tmp.append(None)
+    bic_matrix.append(tmp)
+#找p和q
+min=0
+p , q = 0 , 0
+for i in range(0,pmax+1):
+    for j in range(0,qmax+1):
+        if bic_matrix[i][j]:
+            if bic_matrix[i][j]<min or min==0:
+                min=bic_matrix[i][j]
+                p , q = i , j
 
 
+"""min部分"""
+pmax=int(len(d_sale_min)/10)
+qmax=int(len(d_sale_min)/10)
 
+#得到一个二维矩阵，取[p,q]值最小的参数对
+bic_matrix=[]
+for x in range(pmax+1):
+    tmp=[]
+    for y in range(qmax+1):
+        try:
+            tmp.append(ARIMA(sale_min,(x,tmin_d,y)).fit().bic)
+        except:
+            tmp.append(None)
+    bic_matrix.append(tmp)
+#找p和q
+min=0
+minp , minq = 0 , 0
+for i in range(0,pmax+1):
+    for j in range(0,qmax+1):
+        if bic_matrix[i][j]:
+            if bic_matrix[i][j]<min or min==0:
+                min=bic_matrix[i][j]
+                minp , minq = i , j
+
+"""mid部分"""
+pmax=int(len(d_sale_mid)/10)
+qmax=int(len(d_sale_mid)/10)
+
+#得到一个二维矩阵，取[p,q]值最小的参数对
+bic_matrix=[]
+for x in range(pmax+1):
+    tmp=[]
+    for y in range(qmax+1):
+        try:
+            tmp.append(ARIMA(sale_mid,(x,tmid_d,y)).fit().bic)
+        except:
+            tmp.append(None)
+    bic_matrix.append(tmp)
+#找p和q
+min=0
+midp , midq = 0 , 0
+for i in range(0,pmax+1):
+    for j in range(0,qmax+1):
+        if bic_matrix[i][j]:
+            if bic_matrix[i][j]<min or min==0:
+                min=bic_matrix[i][j]
+                midp , midq = i , j
 
 """下面来建模"""
 
-model_max=ARIMA(sale_max,(0,tmax_d,1)).fit()
-model_min=ARIMA(sale_min,(0,tmin_d,1)).fit()
-model_mid=ARIMA(sale_min,(0,tmid_d,1)).fit()
+model_max=ARIMA(sale_max,(p,tmax_d,q)).fit()
+model_min=ARIMA(sale_min,(minp,tmin_d,minq)).fit()
+model_mid=ARIMA(sale_min,(midp,tmid_d,midq)).fit()
 
 forecast_max=pd.Series(model_max.forecast(7)[0])
 forecast_min=pd.Series(model_min.forecast(7)[0])
