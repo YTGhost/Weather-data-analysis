@@ -24,3 +24,10 @@
 
 李原苇：学完Spring MVC
 
+## 三、看板
+
+![image-20200703182316713](http://image.hihia.top/Screenshot/20200703182318.png)
+
+## 四、甘特图
+
+![image-20200703182444935](http://image.hihia.top/Screenshot/20200703182446.png)
