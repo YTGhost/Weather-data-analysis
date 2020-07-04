@@ -47,7 +47,7 @@ def cal_p_q(df,pmax,qmax,p,q,d):
 
 
 #导入文件
-df = pd.read_csv('./from/huhehaote.csv',index_col=0)
+df = pd.read_csv('./from/Aomen.csv',index_col=0)
 df.index=pd.DatetimeIndex(df.index).to_period('D')
 
 #时序图
@@ -78,5 +78,5 @@ plt.figure(figsize=(10,5))
 forecast.plot()
 plt.show()
 #写入文件
-forecast.to_csv('./forecast/forecast_huhehaote.csv',index=True)
+forecast.to_csv('./forecast/forecast_aomen.csv',index=True)
 print(forecast)
