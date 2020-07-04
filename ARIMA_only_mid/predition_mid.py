@@ -47,7 +47,7 @@ def cal_p_q(df,pmax,qmax,p,q,d):
 
 
 #导入文件
-df = pd.read_csv('./from/huhehaote.csv',index_col=0)
+df = pd.read_csv('./from/Huhehaote.csv',index_col=0)
 df.index=pd.DatetimeIndex(df.index).to_period('D')
 
 #时序图
