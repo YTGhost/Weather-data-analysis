@@ -11,6 +11,9 @@
 <body>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <div class="container">
+        <div class="back" id="bc" @click="bc">
+            back
+        </div>
         <div class="login-wrapper">
             <div class="header">Weather Forecast</div>
             <div class="form-wrapper">
@@ -30,10 +33,23 @@
             methods:{
                 login:function(){
                     alert("注册成功")
+                    window.location.href='./login.html'
                 }
             }
         })
         
+
+        var app2 = new Vue({
+            el:"#bc",
+            data:{
+                
+            },
+            methods:{
+                bc:function(){
+                    window.location.href='./login.html'
+                }
+            }
+        })
     </script>
 </body>
 
@@ -94,7 +110,20 @@
         color: #fff;
     }
 
-    
+    .back{
+        width: 75px;
+        border-radius:15px;
+        padding-left:40px ;
+        padding-right:40px ;
+        padding-top:20px ;
+        padding-bottom:20px ;
+        font-size:x-large;
+        font-weight: 600;
+        
+    }
+    .back:hover{
+        background-color: gray;
+    }
 </style>
 
 </html>
