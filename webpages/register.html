@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>注册</title>
+
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <div class="container">
+        <div class="back" id="bc" @click="bc">
+            back
+        </div>
+        <div class="login-wrapper">
+            <div class="header">Weather Forecast</div>
+            <div class="form-wrapper">
+                <input type="text" name="username" placeholder="username" class="input-item"> 
+                <input type="password" name="password" placeholder="password" class="input-item"> 
+                <input type="password" name="comfirm" placeholder="comfirm" class="input-item"> 
+                <div class="btn" id="reg" @click="login">注册</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el:"#reg",
+            data:{
+
+            },
+            methods:{
+                login:function(){
+                    alert("注册成功")
+                    window.location.href='./login.html'
+                }
+            }
+        })
+        
+
+        var app2 = new Vue({
+            el:"#bc",
+            data:{
+                
+            },
+            methods:{
+                bc:function(){
+                    window.location.href='./login.html'
+                }
+            }
+        })
+    </script>
+</body>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    html{
+        height: 100%;
+    }
+    body{
+        height: 100%;
+    }
+    .container{
+        height: 100%;
+        background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
+    }
+    
+    .login-wrapper{
+        background-color: #fff;
+        width: 400px;
+        height: 500px;
+        border-radius: 20px;
+        padding: 0 50px;
+        position:relative;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+    }
+
+    .login-wrapper .header{
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 200px;
+    }
+    .login-wrapper .form-wrapper .input-item{
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+        border:0;
+        padding:10px;
+        border-bottom: 1px solid rgb(128,125,125);
+        font-size: 15px;
+    }
+
+    .login-wrapper .form-wrapper .input-item::placeholder{
+        text-transform: uppercase;
+    }
+
+    .login-wrapper .form-wrapper .btn {
+        text-align: center;
+        padding: 10px;
+        width:100%;
+        margin-top: 40px;
+        background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
+        color: #fff;
+    }
+
+    .back{
+        width: 75px;
+        border-radius:15px;
+        padding-left:40px ;
+        padding-right:40px ;
+        padding-top:20px ;
+        padding-bottom:20px ;
+        font-size:x-large;
+        font-weight: 600;
+        
+    }
+    .back:hover{
+        background-color: gray;
+    }
+</style>
+
+</html>
