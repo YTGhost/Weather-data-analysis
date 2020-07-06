@@ -1,23 +1,10 @@
 <template>
     <div id="app">
         <el-container>
-            <el-header style="height: 80px;">天气预测</el-header>
             <el-container>
-                <el-aside width="200px">
-                    <el-menu default-active="1" class="el-menu-vertical-demo">
-                        <el-menu-item index="1">
-                            <i class="el-icon-user"></i>
-                            <span slot="title">数据报表</span>
-                        </el-menu-item>
-                    </el-menu>
-                </el-aside>
+                <side-bar></side-bar>
                 <el-container>
                     <el-main>
-                        <!-- 面包屑导航 -->
-                        <el-breadcrumb separator-class="el-icon-arrow-right">
-                            <el-breadcrumb-item>首页</el-breadcrumb-item>
-                            <el-breadcrumb-item>数据报表</el-breadcrumb-item>
-                        </el-breadcrumb>
                         <!--放置地图和折线图的地方-->
                         <div id="map"></div>>
                         <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
@@ -32,8 +19,11 @@
 
 <script>
     // import _ from 'lodash'
+    //import Login from "./components/login";
+    import sideBar from "./components/sideBar";
     export default {
         name: 'App',
+        components: {sideBar},
         data() {
             return {
                 baseURL: "https://www.hihia.top/vue-weather-api/api/weather",
@@ -85,7 +75,6 @@
         methods: {
             initEchart() {
                 var myChart = this.$echarts.init(document.getElementById('map'))
-
                 var that = this
                 var option = {
                     tooltip: {
@@ -166,12 +155,10 @@
                             if (res.data.code === 1) {
                                 // 把数据给users
                                 that.data = res.data.data;
-
                                 var lineChart = that.$echarts.init(document.getElementById('main'))
                                 option1.series[0].data = res.data.data
                                 console.log(option1)
                                 lineChart.setOption(option1)
-
                                 // 提示
                                 that.$message({
                                     message: '数据加载成功',
@@ -199,12 +186,10 @@
                     })
                     .then(function (res) {
                         console.log(res)
-
                         // 请求成功后执行的函数
                         if (res.data.code === 1) {
                             // 把数据给users
                             that.data = res.data.data;
-
                             // 提示
                             that.$message({
                                 message: '数据加载成功',
@@ -230,12 +215,10 @@
         padding: 0px;
         height: 100%;
     }
-
     #map {
         width: 100%;
         height: 600px;
     }
-
     .el-header {
         background-color: #B3C0D1;
         color: #333;
@@ -244,21 +227,18 @@
         font-size: 32px;
         font-weight: bold;
     }
-
     .el-footer {
         background-color: #B3C0D1;
         color: #333;
         text-align: center;
         line-height: 30px;
     }
-
     .el-aside {
         background-color: #D3DCE6;
         color: #333;
         text-align: center;
         line-height: 200px;
     }
-
     .el-main {
         background-color: #E9EEF3;
         color: #333;
