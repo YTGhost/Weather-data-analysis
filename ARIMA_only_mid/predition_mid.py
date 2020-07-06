@@ -47,7 +47,7 @@ def cal_p_q(df,pmax,qmax,p,q,d):
 
 
 #导入文件
-df = pd.read_csv('./from/Huhehaote.csv',index_col=0)
+df = pd.read_csv('./from/Beijing.csv',index_col=0)
 df.index=pd.DatetimeIndex(df.index).to_period('D')
 
 #时序图
@@ -67,7 +67,7 @@ p,q=cal_p_q(df,8,8,0,0,d)
 #print(p)
 #print(q)
 #建模
-model=ARIMA(df,(p,d,q)).fit()
+model=ARIMA(df,(p,3,q)).fit()
 #预测
 forecast=pd.DataFrame(model.forecast(7)[0])
 
