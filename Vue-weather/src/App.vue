@@ -1,4 +1,5 @@
 <template>
+
     <div id="app">
         <el-container>
             <el-header style="height: 80px;">天气预测</el-header>
@@ -32,8 +33,10 @@
 
 <script>
     // import _ from 'lodash'
+    //import Login from "./components/login";
     export default {
         name: 'App',
+        components: {Login},
         data() {
             return {
                 baseURL: "https://www.hihia.top/vue-weather-api/api/weather",
