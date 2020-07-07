@@ -1,6 +1,7 @@
 .DS_Store
 Vue-weather/node_modules
 Vue-weather/dist
+ssm-manage-system/target
 
 # local env files
 .env.local
