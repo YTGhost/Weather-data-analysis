@@ -30,7 +30,7 @@ def split_sequence(sequence, n_steps):
     return array(X), array(y)
 
 
-dataframe = pd.read_csv('./test.csv', usecols=[1], engine='python')
+dataframe = pd.read_csv('./from/hainan.csv', usecols=[1], engine='python')
 dataset = dataframe.values
 # 将整型变为float
 dataset = dataset.astype('float32')
@@ -56,7 +56,7 @@ model.add(LSTM(50, activation='relu', input_shape=(n_steps, n_features)))  # 隐
 model.add(Dense(1))
 model.compile(optimizer='adam', loss='mse')
 # fit model
-model.fit(X, y, epochs=1200, batch_size=1, verbose=2)  # 迭代次数，批次数，verbose决定是否显示每次迭代
+model.fit(X, y, epochs=3, batch_size=1, verbose=2)  # 迭代次数，批次数，verbose决定是否显示每次迭代
 # demonstrate prediction
 tes=raw_seq[-7:]
 
@@ -69,4 +69,9 @@ for i in range(7):
     tes[6]=yhat[0][0]
 
 dataF=pd.DataFrame(tes)
-print(dataF)
+dataF.rename(columns={0:'tmid'},inplace=True)
+plt.figure(figsize=(10,5))
+dataF.plot()
+plt.show()
+
+dataF.to_csv('./forecast/hainan_forecast.csv',index=True)
