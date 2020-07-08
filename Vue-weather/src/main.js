@@ -4,11 +4,15 @@ import './plugins/element.js'
 import axios from 'axios'
 import echarts from 'echarts'
 import 'echarts/map/js/china'
+import VueRouter from 'vue-router'
+import router from "./router";
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.prototype.$echarts = echarts
+Vue.use(VueRouter)
 
 new Vue({
   render: h => h(App),
+  router: router
 }).$mount('#app')

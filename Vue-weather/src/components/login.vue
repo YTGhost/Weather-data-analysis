@@ -2,31 +2,51 @@
     <div class="login-wrapper">
         <div class="header">Weather Forecast</div>
             <div class="form-wrapper">
-                <input type="text" name="username" placeholder="username" class="input-item" v-model="username"> 
-                <input type="password" name="password" placeholder="password" class="input-item" v-model="password"> 
+                <input type="text" name="username" placeholder="username" class="input-item" v-model="username">
+                <input type="password" name="password" placeholder="password" class="input-item" v-model="password">
                 <div class="btn" id="log" @click="login">登录</div>
             </div>
         <div class="msg">
-               Don't have any account?<a href="#" @click="signin">注册</a>
+               Don't have any account?<a @click="signin">注册</a>
         </div>
     </div>
 </template>
 
 <script>
+//import axios from 'axios'
+import router from "../router";
 export default {
     name: 'login',
     data(){
         return {
             username:'',
             password:'',
+            baseUrl: '127.0.0.1'
         }
     },
     methods:{
         login:function(){
-            alert("登录"+this.username)
+            //this.$router.push({path:`users/`+'1111'})
+            router.push({path:`users`})
+           /* alert("登录"+this.username)
+            axios.post(this.baseUrl+'/api/login',{
+                username:this.username,
+                password:this.password
+            }).then(response=>{
+                let code=response.status
+                if(code === 0)
+                    this.$message.error('账号或密码不对')
+                else{
+                    if(code ===1){
+                        router.push('admin')
+                    }else if(code===2){
+                        router.push({path:`users`})
+                    }
+                }
+            })*/
         },
         signin :function(){
-            alert("注册")
+            router.push({path:'register'})
         }
     }
 }
@@ -40,6 +60,7 @@ export default {
         height: 500px;
         border-radius: 20px;
         padding: 0 50px;
+        margin:0 auto
     }
 
     .login-wrapper .header{
