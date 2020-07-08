@@ -53,7 +53,7 @@ def cal(path):
     model.add(Dense(1))
     model.compile(optimizer='adam', loss='mse')
     # fit model
-    model.fit(X, y, epochs=5, batch_size=1, verbose=2)  # 迭代次数，批次数，verbose决定是否显示每次迭代
+    model.fit(X, y, epochs=100, batch_size=1, verbose=2)  # 迭代次数，批次数，verbose决定是否显示每次迭代
     # demonstrate prediction
     tes=raw_seq[-7:]
 
