@@ -1,9 +1,34 @@
 <template>
-    <div id="app">
-        <router-view></router-view>
-    </div>
-</template>
+    <el-container>
+        <el-header style="height: 80px;">天气预测</el-header>
+        <el-container>
+            <el-aside width="200px">
+                <el-menu default-active="1" class="el-menu-vertical-demo">
+                    <el-menu-item index="1">
+                        <i class="el-icon-user"></i>
+                        <span slot="title">数据报表</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+            <el-container>
+                <el-main>
+                    <!-- 面包屑导航 -->
+                    <el-breadcrumb separator-class="el-icon-arrow-right">
+                        <el-breadcrumb-item>首页</el-breadcrumb-item>
+                        <el-breadcrumb-item>数据报表</el-breadcrumb-item>
+                    </el-breadcrumb>
+                    <!--放置地图和折线图的地方-->
+                    <div id="map"></div>>
+                    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+                    <div id="main" style="width: 600px;height:400px;"></div>
+                </el-main>
+                <el-footer style="height: 30px;">天气预测 HIHIA | 2020-07-03</el-footer>
+            </el-container>
+        </el-container>
+    </el-container>
 
+
+</template>
 <script>
     // import _ from 'lodash'
     //import search from "./views/search";
