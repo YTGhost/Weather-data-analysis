@@ -46,14 +46,14 @@
                 width="30%"
                 v-if="this_index >= 0"
                 >
-            <el-form :model="basic_info[this_index]" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="邮箱" prop="email">
+            <el-form  :model="basic_info[this_index]" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="邮箱" prop="[0]">
                     <el-input :disabled="is_disabled" v-model="basic_info[this_index][0]"></el-input>
                 </el-form-item>
-                <el-form-item label="用户名" prop="user_name">
+                <el-form-item label="用户名" prop="[1]">
                     <el-input :disabled="is_disabled" v-model="basic_info[this_index][1]"></el-input>
                 </el-form-item>
-                <el-form-item label="密码" prop="passward">
+                <el-form-item label="密码" prop="[2]">
                     <el-input :disabled="is_disabled" v-model="basic_info[this_index][2]"></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -92,40 +92,38 @@
                callback()
             };
             var user_validate = (rule, value, callback) => {
+                console.log(value)
                 if (value === '') {
                     callback(new Error('请输入用户名'));
                 } else{
                     if(value.length<5)
                         callback(new Error('用户名长度必须大于5'))
+                    callback()
                 }
-                callback()
             };
             var passward_validate = (rule, value, callback) =>{
+                console.log(value)
                 if (value === '') {
                     callback(new Error('请输入密码'));
                 } else{
-                    if(value.length<5)
+                    if(value.length <5)
                         callback(new Error('密码长度必须大于5'))
                     callback()
                 }
             };
             return {
                 basic_info:[[1,2,3],[4,5,6]],
-                rules:{//表单验证
-                    email: [
-                        { validator: mail_validate, trigger: 'blur' }
-                    ],
-                    user_name: [
-                        { validator: user_validate, trigger: 'blur' }
-                    ],
-                    passward: [
-                        { validator: passward_validate, trigger: 'blur' }
-                    ]
-                },
+                this_index:-1,
                 //basic_info:[],
+                rules:{//表单验证
+                          [0]:  { validator: mail_validate, trigger: 'blur' } ,
+                          [1]:{ validator: user_validate, trigger: 'blur' },
+                          [2]:{ validator: passward_validate, trigger: 'blur' }
+                    //{ validator: user_validate, trigger: 'blur' }{ validator: passward_validate, trigger: 'blur' }
+                },
                 dialogVisible:false,
                 is_disabled:true,
-                this_index:-1,
+
                 baseUrl:'127.0.0.1',
                 input:''
             }
@@ -173,13 +171,13 @@
                 this.$refs.ruleForm.validate((valid) => {
                     if (valid) {
                         alert('submit!');
+                        this.dialogVisible = false
                         return true
                     } else {
-                        console.log('error submit!!');
+                        this.$message.error('error submit!!');
                         return false;
                     }
                 });
-                //表单校验先不写
                 /*let that =this
                 axios.get(that.baseurl+'/api/send_info',{//请求并且发送修改的数据
                     params:{info:that.basic_info[that.this_index]}
@@ -192,7 +190,7 @@
                     else
                         alert('修改失败')
                 })*/
-                this.dialogVisible = false
+
             }
         }
     }
