@@ -6,6 +6,7 @@ import echarts from 'echarts'
 import 'echarts/map/js/china'
 import VueRouter from 'vue-router'
 import router from "./router";
+import './router/permission'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
