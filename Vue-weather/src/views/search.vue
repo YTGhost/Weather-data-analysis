@@ -1,14 +1,16 @@
 <template>
     <div class="out_div">
         <div style="margin: auto;width: 20%">
-            <el-input v-model="input" placeholder="请输入内容" style="width:70%"></el-input>
-            <el-button @click="get_info" style="width: 25%;margin-left: 3px">搜索</el-button>
+            <el-input v-model="input" placeholder="请输入内容" style="width:70%;margin-top: 10px;margin-bottom: 5px"></el-input>
+            <el-button @click="get_info" style="width: 25%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px">搜索</el-button>
         </div>
+
+        <div style="margin: auto;width: 60%">
         <el-table
                 :data="basic_info"
                 border
                 type="index"
-                style="width: 80%;margin-left: 10%">
+                style="width: 100%;border-radius: 35px;height: 780px">
             <el-table-column
                     type="index"
                     width="200">
@@ -42,12 +44,13 @@
                 </template>
             </el-table-column>
         </el-table>
+        </div>
         <el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
                 width="30%"
                 v-if="this_index >= 0"
-                >
+        >
             <el-form  :model="basic_info[this_index]" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="邮箱" prop="[0]">
                     <el-input :disabled="is_disabled" v-model="basic_info[this_index][0]"></el-input>
@@ -209,7 +212,7 @@
         text-align: center;
     }
     .out_div{
-        background-color: #dbf7ff;
+        background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
         height: 900px;
     }
 
