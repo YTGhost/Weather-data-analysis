@@ -1,7 +1,9 @@
 <template>
     <div class="out_div">
-        <el-input v-model="input" placeholder="请输入内容" style="width:20%"></el-input>
-        <el-button @click="get_info">搜索</el-button>
+        <div style="margin: auto;width: 20%">
+            <el-input v-model="input" placeholder="请输入内容" style="width:70%"></el-input>
+            <el-button @click="get_info" style="width: 25%;margin-left: 3px">搜索</el-button>
+        </div>
         <el-table
                 :data="basic_info"
                 border
@@ -208,6 +210,7 @@
     }
     .out_div{
         background-color: #dbf7ff;
+        height: 900px;
     }
 
 </style>
