@@ -29,7 +29,9 @@ export default {
     methods:{
         login:function(){
             //this.$router.push({path:`users/`+'1111'})
-            router.push({path:`admin`})
+            window.document.cookie=2
+            router.push({path:`users`})
+
            /* alert("登录"+this.username)
             axios.post(this.baseUrl+'/api/login',{
                 username:this.username,
