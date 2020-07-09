@@ -1,4 +1,5 @@
 <template>
+    <div  class ='page' style="height: 725px;padding-top: 180px">
     <div class="login-wrapper">
         <div class="header">Weather Forecast</div>
             <div class="form-wrapper">
@@ -9,6 +10,7 @@
         <div class="msg">
                Don't have any account?<a @click="signin">注册</a>
         </div>
+    </div>
     </div>
 </template>
 
@@ -56,13 +58,18 @@ export default {
 
 
 <style scoped>
+    .page{
+        background-image: linear-gradient(-90deg, #29bdd9 0%, #276ace 100%);
+    }
+
      .login-wrapper{
-        background-color: #fff;
+        background-color:#fff;
         width: 400px;
         height: 500px;
         border-radius: 20px;
         padding: 0 50px;
-        margin:0 auto
+        margin: auto
+
     }
 
     .login-wrapper .header{
