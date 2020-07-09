@@ -62,7 +62,6 @@
                     }
 
                 })*/
-                router.push({path:' '})
             }
         }
 
