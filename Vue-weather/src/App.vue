@@ -10,7 +10,6 @@
     //import login from "./components/login";
     export default {
         name: 'App',
-        components: {},
         data() {
             return {
                 baseURL: "https://www.hihia.top/vue-weather-api/api/weather",
