@@ -5,12 +5,12 @@
             <el-button @click="get_info" style="width: 25%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px">搜索</el-button>
         </div>
 
-        <div style="margin: auto;width: 60%">
+        <div style="margin: auto;width: 60%;">
         <el-table
                 :data="basic_info"
                 border
                 type="index"
-                style="width: 100%;border-radius: 35px;height: 780px">
+                style="width: 100%;border-radius: 35px;height: 780px;padding-left: 30px;padding-right: 30px;padding-top: 30px">
             <el-table-column
                     type="index"
                     width="200">
