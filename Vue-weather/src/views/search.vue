@@ -2,7 +2,7 @@
     <div class="out_div">
         <div style="margin: auto;width: 20%">
             <el-input v-model="input" placeholder="请输入内容" style="width:70%;margin-top: 10px;margin-bottom: 5px"></el-input>
-            <el-button @click="get_info" style="width: 25%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px">搜索</el-button>
+            <el-button @click="get_info" style="width: 25%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px;font-size:large">搜索</el-button>
         </div>
 
         <div style="margin: auto;width: 60%;">
@@ -10,7 +10,7 @@
                 :data="basic_info"
                 border
                 type="index"
-                style="width: 100%;border-radius: 35px;height: 780px;padding-left: 30px;padding-right: 30px;padding-top: 30px">
+                style="width: 100%;border-radius: 35px;height: 720px;padding-left: 30px;padding-right: 30px;padding-top: 30px">
             <el-table-column
                     type="index"
                     width="200">
@@ -44,6 +44,7 @@
                 </template>
             </el-table-column>
         </el-table>
+            <el-button style="width: 100px;margin-top: 20px;font-size: larger">添加</el-button>
         </div>
         <el-dialog
                 title="提示"
