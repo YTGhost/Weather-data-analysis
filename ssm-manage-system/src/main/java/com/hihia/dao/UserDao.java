@@ -33,4 +33,56 @@ public interface UserDao {
             @Result(property = "depts", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.DeptDao.findDeptByUserId"))
     })
     public UserInfo findByUsername(String username);
+
+    /**
+     * 查询用户名是否被用过
+     * @param username
+     * @return
+     */
+    @Select("select * from users where username=#{username}")
+    public UserInfo checkUsername(String username);
+
+    /**
+     * 查询邮箱是否被用过
+     * @param email
+     * @return
+     */
+    @Select("select * from users where email=#{email}")
+    public UserInfo checkEmail(String email);
+
+    /**
+     * 创建用户（基本信息）
+     * @param userInfo
+     */
+    @Select("insert into users(username, password, email) value(#{username}, #{password}, #{email})")
+    public void createUser(UserInfo userInfo);
+
+    /**
+     * 通过用户名来查找对应的id
+     * @param username
+     * @return
+     */
+    @Select("select id from users where username=#{username}")
+    public String findIdByUsername(String username);
+
+    /**
+     * 通过用户id来删除用户基本信息
+     * @param id
+     */
+    @Delete("delete from users where id=#{id}")
+    public void deleteInfoById(String id);
+
+    /**
+     * 通过用户id来删除其与部门之间的所有关系
+     * @param id
+     */
+    @Delete("delete from users_depts where userId=#{id}")
+    public void deleteDeptLinkById(String id);
+
+    /**
+     * 通过用户id来删除其与角色之间的所有关系
+     * @param id
+     */
+    @Delete("delete from users_roles where userId=#{id}")
+    public void deleteRoleLinkById(String id);
 }
