@@ -1,13 +1,13 @@
 <template>
     <div class="out_div">
 
-        <div style="margin: auto;width: 30%">
+        <div style="margin: auto;width: 40%">
             <el-button style="width: 20%;margin-top: 10px;">添加</el-button>
             <el-input v-model="input" placeholder="请输入内容" style="margin-left: 3px;width:50%;margin-top: 10px;margin-bottom: 5px"></el-input>
             <el-button @click="get_info" style="width: 20%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px;">搜索</el-button>
         </div>
 
-        <div style="margin: auto;width: 80%;">
+        <div style="margin: auto;width: 90%;width: 90%;padding-left: 200px">
         <el-table
                 :data="basic_info"
                 border
@@ -211,7 +211,7 @@
         width: 100%;
     }
     .out_div{
-        background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
+        margin: auto;
         height: 900px;
     }
 
