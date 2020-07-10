@@ -1,7 +1,5 @@
 <template>
-    <div class="out_div">
-            <el-button style="width: 20%;margin: 10px;">添加</el-button>
-        <div style="margin: auto;width: 80%;">
+    <div>
         <el-table
                 :data="basic_info"
                 border
@@ -41,8 +39,6 @@
             </el-table-column>
         </el-table>
 
-        </div>
-
         <el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
@@ -72,9 +68,9 @@
     import axios from 'axios'
 
     export default {
-        name: "search",
+        name: "role_table.vue",
         data(){
-           var mail_validate = (rule, value, callback) => {
+            var mail_validate = (rule, value, callback) => {
                 if (value.length === 0) {
                     callback(new Error('请输入邮箱'));
                 } else {
@@ -83,7 +79,7 @@
                         callback(new Error('邮箱格式不对'));
                     }
                 }
-               callback()
+                callback()
             };
             var user_validate = (rule, value, callback) => {
                 console.log(value)
@@ -110,9 +106,9 @@
                 this_index:-1,
                 //basic_info:[],
                 rules:{//表单验证
-                          [0]:  { validator: mail_validate, trigger: 'blur' } ,
-                          [1]:{ validator: user_validate, trigger: 'blur' },
-                          [2]:{ validator: passward_validate, trigger: 'blur' }
+                    [0]:  { validator: mail_validate, trigger: 'blur' } ,
+                    [1]:{ validator: user_validate, trigger: 'blur' },
+                    [2]:{ validator: passward_validate, trigger: 'blur' }
                 },
                 dialogVisible:false,
                 is_disabled:true,

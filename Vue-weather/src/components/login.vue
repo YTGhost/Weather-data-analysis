@@ -8,7 +8,7 @@
                 <div class="btn" id="log" @click="login">登录</div>
             </div>
         <div class="msg">
-               Don't have any account?<a @click="signin">注册</a>
+               Don't have any account?<a>注册</a>
         </div>
     </div>
     </div>
@@ -29,7 +29,6 @@ export default {
     methods:{
         login:function(){
             //this.$router.push({path:`users/`+'1111'})
-            //router.push({path:`users`})
             let that =this
             //alert("登录"+this.username)
             axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{
@@ -55,9 +54,6 @@ export default {
                     }
             })
         },
-        signin :function(){
-            router.push({path:'register'})
-        }
     }
 }
 </script>

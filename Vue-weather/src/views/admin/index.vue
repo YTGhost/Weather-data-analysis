@@ -14,7 +14,8 @@ import axios from 'axios'
         data(){
             return{
                 data:window.document.cookie,
-                role:[]
+                role:[],
+                num:[]
             }
         },
         mounted() {
@@ -24,13 +25,10 @@ import axios from 'axios'
                 }}).then(response=>{
                     let data=response.data
                     that.role=data.data.roles
-                    console.log('11111',that.role[0].id)
-                if(that.role[0].indexOf('1')===-1){
-                    alert('1')
-                }
+                    for( var i=0;i<that.role.length;i++){
+                       that.num.push(that.role[i].id)
+                    }
             })
-
-
         }
     }
 </script>

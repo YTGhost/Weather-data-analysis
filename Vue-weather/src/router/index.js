@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import login from "../components/login";
-import register from "../components/register";
 
 Vue.use(VueRouter)
 
@@ -25,13 +24,8 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
-  {
-    path: '/register',
-    name: 'register',
-    component: register
-  },
     {
-      path:'/admin/:data',
+      path:'/admin',
       name:'admin',
       component:()=>(import('../views/admin/index.vue'))
     },
