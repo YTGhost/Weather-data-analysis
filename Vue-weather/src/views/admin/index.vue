@@ -24,7 +24,7 @@ import axios from 'axios'
                 }}).then(response=>{
                     let data=response.data
                     that.role=data.data.roles
-                    console.log('11111',that.role)
+                    console.log('11111',that.role[0].id)
                 if(that.role[0].indexOf('1')===-1){
                     alert('1')
                 }
