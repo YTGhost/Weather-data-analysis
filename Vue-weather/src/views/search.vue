@@ -67,16 +67,6 @@
                     <el-button type="primary" @click="modify">确 定</el-button>
                 </el-form-item>
             </el-form>
-            <!--<span>用户名:</span>没有多大用了
-            <el-input :disabled="is_disabled" v-model="basic_info[this_index][0]"></el-input>
-            <span>邮箱:</span>
-            <el-input :disabled="is_disabled " v-model="basic_info[this_index][0]"></el-input>
-            <span>密码:</span>
-            <el-input :disabled="is_disabled " v-model="basic_info[this_index][2]"></el-input>
-            <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="modify">确 定</el-button>
-            </span>-->
         </el-dialog>
     </div>
 </template>
@@ -169,6 +159,10 @@
                     params:{info:that.input}
                 }).then(response=>{//返回的数据
                     that.basic_info=response.data
+                    if(that.basic_info===null){
+                        that.basic_info=''
+                        this.$message.error('没有找到')
+                    }
                 })
             },
             modify(){
@@ -183,21 +177,20 @@
                         this.$message.error('error submit!!');
                         return false;
                     }
-                });
+                })
                 /*let that =this
-                axios.get(that.baseurl+'/api/send_info',{//请求并且发送修改的数据
-                    params:{info:that.basic_info[that.this_index]}
-                }).then(response=>{
-                    let code=response.code//返回的状态码
-                    if(code ===3000){
-                        alert('修改成功')
-                        this.get_info()//用于界面更新
-                    }
-                    else
-                        alert('修改失败')
-                })*/
-
-            }
+                              axios.get(that.baseurl+'/api/send_info',{//请求并且发送修改的数据
+                                  params:{info:that.basic_info[that.this_index]}
+                              }).then(response=>{
+                                  let code=response.code//返回的状态码
+                                  if(code ===3000){
+                                      alert('修改成功')
+                                      this.get_info()//用于界面更新
+                                  }
+                                  else
+                                      alert('修改失败')
+                              })*/
+            },
         }
     }
 
