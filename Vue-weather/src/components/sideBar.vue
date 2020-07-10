@@ -6,7 +6,7 @@
             @select="handleSelect"
             background-color="#545c64"
             text-color="#fff"
-            style="width: 20%;height: 100%"
+            style="width: 20%;height: 845px;"
             active-text-color="#ffd04b">
         <el-submenu index="1">
             <template slot="title">用户管理</template>
