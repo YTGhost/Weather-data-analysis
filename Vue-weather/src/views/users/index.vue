@@ -26,8 +26,7 @@
             </el-container>
         </el-container>
     </el-container>
-
-
+    
 </template>
 <script>
     // import _ from 'lodash'

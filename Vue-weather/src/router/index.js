@@ -31,7 +31,7 @@ Vue.use(VueRouter)
     component: register
   },
     {
-      path:'/admin',
+      path:'/admin/:data',
       name:'admin',
       component:()=>(import('../views/admin/index.vue'))
     },
