@@ -1,28 +1,31 @@
 <template>
-    <div>
+    <el-container>
+        <el-container>
+            <el-aside width="20%">
+            <SideBar></SideBar>
+                </el-aside>
+        </el-container>
+        <el-container>
         <search></search>
-    </div>
+        </el-container>
+    </el-container>
 </template>
 
 <script>
 import search from "../search";
+import SideBar from "../../components/sideBar";
 //import router from "../router";
     export default {
         name: "index.vue",
-        components: {search},
+        components: {SideBar, search},
         data(){
             return{
-                yyy:{},
-                tt:1
+
             }
         },
         mounted() {
             //console.log(111111,this.$route.params.data)
-            if(this.tt===1){
-                this.yyy=this.$route.params.data
-                this.tt=0
-            }
-            console.log(111111,this.yyy)
+           console.log('11111',window.document.cookie)
         }
     }
 </script>

@@ -34,8 +34,7 @@ export default {
             //alert("登录"+this.username)
             axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{
                 params:{
-                username:this.username,
-                password:this.password}
+                username:this.username}
             }).then(response=>{
                 console.log(response.data)
                 let res=response.data
@@ -43,7 +42,7 @@ export default {
                     this.$message.error('账号错误')
                     return
                 }
-                if(that.password!==res.password){
+                if(that.password!==res.data.password){
                     this.$message.error('密码错误')
                     return
                 }
