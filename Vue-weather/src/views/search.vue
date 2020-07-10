@@ -1,19 +1,21 @@
 <template>
     <div class="out_div">
-        <div style="margin: auto;width: 20%">
-            <el-input v-model="input" placeholder="请输入内容" style="width:70%;margin-top: 10px;margin-bottom: 5px"></el-input>
-            <el-button @click="get_info" style="width: 25%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px;font-size:large">搜索</el-button>
+
+        <div style="margin: auto;width: 30%">
+            <el-button style="width: 20%;margin-top: 10px;">添加</el-button>
+            <el-input v-model="input" placeholder="请输入内容" style="margin-left: 3px;width:50%;margin-top: 10px;margin-bottom: 5px"></el-input>
+            <el-button @click="get_info" style="width: 20%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px;">搜索</el-button>
         </div>
 
-        <div style="margin: auto;width: 60%;">
+        <div style="margin: auto;width: 80%;">
         <el-table
                 :data="basic_info"
                 border
                 type="index"
-                style="width: 100%;border-radius: 35px;height: 720px;padding-left: 30px;padding-right: 30px;padding-top: 30px">
+                style="width: 75%;border-radius: 35px;height: 720px;padding-left: 30px;padding-right: 30px;padding-top: 30px;float: left">
             <el-table-column
                     type="index"
-                    width="200">
+                    style="width: 20px">
                 <template slot-scope="scope">
                     {{scope.$index}}
                 </template>
@@ -26,12 +28,12 @@
             <el-table-column
                     prop="[1]"
                     label="用户名"
-                    width="200px">
+                    width="150px">
             </el-table-column>
             <el-table-column
                     prop="[2]"
                     label="密码"
-                    width="200px">
+                    width="150px">
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -44,8 +46,10 @@
                 </template>
             </el-table-column>
         </el-table>
-            <el-button style="width: 100px;margin-top: 20px;font-size: larger">添加</el-button>
+            <side-bar style="float: right;width: 22%"></side-bar>
+
         </div>
+
         <el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
@@ -83,8 +87,11 @@
 
 <script>
     import axios from 'axios'
+    import SideBar from "../components/sideBar";
+
     export default {
         name: "search",
+        components: {SideBar},
         data(){
            var mail_validate = (rule, value, callback) => {
                 if (value.length === 0) {
@@ -211,6 +218,7 @@
         margin-left: auto;
         position: relative;
         text-align: center;
+        width: 100%;
     }
     .out_div{
         background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
