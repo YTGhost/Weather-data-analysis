@@ -7,9 +7,7 @@
                 <input type="password" name="password" placeholder="password" class="input-item" v-model="password">
                 <div class="btn" id="log" @click="login">登录</div>
             </div>
-        <div class="msg">
-               Don't have any account?<a @click="signin">注册</a>
-        </div>
+
     </div>
     </div>
 </template>
@@ -49,9 +47,7 @@ export default {
                 }
             })*/
         },
-        signin :function(){
-            router.push({path:'register'})
-        }
+
     }
 }
 </script>
