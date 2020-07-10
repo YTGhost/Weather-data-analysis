@@ -7,47 +7,53 @@
                 <input type="password" name="password" placeholder="password" class="input-item" v-model="password">
                 <div class="btn" id="log" @click="login">登录</div>
             </div>
-
+        <div class="msg">
+               Don't have any account?<a>注册</a>
+        </div>
     </div>
     </div>
 </template>
 
 <script>
-//import axios from 'axios'
+import axios from 'axios'
 import router from "../router";
 export default {
     name: 'login',
     data(){
         return {
-            username:'',
-            password:'',
-            baseUrl: '127.0.0.1'
+            username:'admin',
+            password:'123456',
+            baseUrl: 'http://182.92.66.200:8888/ssm-manage-system'
         }
     },
     methods:{
         login:function(){
             //this.$router.push({path:`users/`+'1111'})
-            window.document.cookie=2
-            router.push({path:`users`})
-
-           /* alert("登录"+this.username)
-            axios.post(this.baseUrl+'/api/login',{
-                username:this.username,
-                password:this.password
+            let that =this
+            //alert("登录"+this.username)
+            axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{
+                params:{
+                username:this.username}
             }).then(response=>{
-                let code=response.status
-                if(code === 0)
-                    this.$message.error('账号或密码不对')
-                else{
-                    if(code ===1){
-                        router.push('admin')
-                    }else if(code===2){
+                console.log(response.data)
+                let res=response.data
+                if(res.code === 0){
+                    this.$message.error('账号错误')
+                    return
+                }
+                if(that.password!==res.data.password){
+                    this.$message.error('密码错误')
+                    return
+                }
+                window.document.cookie=that.username
+                let data=res.data
+                if( data.id=== 1){
+                        router.push({name:'role_table'})
+                    }else if(data.id===2){
                         router.push({path:`users`})
                     }
-                }
-            })*/
+            })
         },
-
     }
 }
 </script>

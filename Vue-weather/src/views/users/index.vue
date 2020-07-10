@@ -20,7 +20,6 @@
 
         </el-container>
     </el-container>
-    
 </template>
 <script>
     import Weather from "../../components/weather";
