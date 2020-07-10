@@ -8,13 +8,13 @@
                         <el-menu-item index="1">
                             <span slot="title">用户管理</span>
                         </el-menu-item>
-                        <el-menu-item index="1">
+                        <el-menu-item index="2">
                             <span slot="title">部门管理</span>
                         </el-menu-item>
-                        <el-menu-item index="1">
+                        <el-menu-item index="3">
                             <span slot="title">角色管理</span>
                         </el-menu-item>
-                        <el-menu-item index="1">
+                        <el-menu-item index="4">
                             <span slot="title">天气数据</span>
                         </el-menu-item>
                     </el-menu>
@@ -38,7 +38,7 @@
                 show:false
             }
         },
-        mounted() {
+        created() {
             let path=this.$route.path
             console.log(path)
             if (path==='/'){
@@ -47,6 +47,8 @@
             else{
                 this.show=true
             }
+        },
+        beforeCreate() {
         },
         methods:{
             getPersonData(){

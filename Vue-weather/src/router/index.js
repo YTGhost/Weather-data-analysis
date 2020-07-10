@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import weather from "../components/weather";
 import login from "../components/login";
-
+import role_table from "../components/role_table";
 Vue.use(VueRouter)
 
   const routes = [
@@ -12,9 +12,13 @@ Vue.use(VueRouter)
     component: login
   },
     {
-      path: '/home',
-      name: 'home',
-      component: Home
+      path: '/weather',
+      name: 'weather',
+      component: weather
+    },{
+      path: '/role_table',
+      name: 'role_table',
+      component: role_table
     },
   {
     path: '/about',
