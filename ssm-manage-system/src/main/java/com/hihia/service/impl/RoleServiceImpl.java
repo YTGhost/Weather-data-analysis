@@ -2,6 +2,7 @@ package com.hihia.service.impl;
 
 import com.hihia.dao.RoleDao;
 import com.hihia.domain.Role;
+import com.hihia.domain.User_Role;
 import com.hihia.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,25 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> findRoleByUserId(String id) {
         return roleDao.findRoleByUserId(id);
+    }
+
+    @Override
+    public List<Role> findAll() {
+        return roleDao.findAll();
+    }
+
+    @Override
+    public List<Role> findRoleByRoleId(String id) {
+        return roleDao.findRoleByRoleId(id);
+    }
+
+    @Override
+    public User_Role checkRole(String userId, String roleId) {
+        return roleDao.checkRole(userId, roleId);
+    }
+
+    @Override
+    public void assignRole(String userId, String roleId) {
+        roleDao.assignRole(userId, roleId);
     }
 }

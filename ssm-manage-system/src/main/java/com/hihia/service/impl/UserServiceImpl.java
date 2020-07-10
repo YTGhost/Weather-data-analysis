@@ -24,4 +24,31 @@ public class UserServiceImpl implements UserService {
     public UserInfo findByUsername(String username) {
         return userDao.findByUsername(username);
     }
+
+    @Override
+    public UserInfo checkUsername(String username) {
+        return userDao.checkUsername(username);
+    }
+
+    @Override
+    public UserInfo checkEmail(String email) {
+        return userDao.checkEmail(email);
+    }
+
+    @Override
+    public void createUser(UserInfo userInfo) {
+        userDao.createUser(userInfo);
+    }
+
+    @Override
+    public String findIdByUsername(String username) {
+        return userDao.findIdByUsername(username);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        userDao.deleteInfoById(id);
+        userDao.deleteDeptLinkById(id);
+        userDao.deleteRoleLinkById(id);
+    }
 }
