@@ -2,6 +2,8 @@
     <el-container>
         <el-header style="height: 80px;">天气预测</el-header>
         <el-container>
+
+            <!--侧边栏-->
             <el-aside width="200px">
                 <el-menu default-active="1" class="el-menu-vertical-demo">
                     <el-menu-item index="1">
@@ -10,20 +12,22 @@
                     </el-menu-item>
                 </el-menu>
             </el-aside>
+            <!--主要内容-->
             <el-main>
+                <search></search>
                 <weather></weather>
             </el-main>
+
         </el-container>
     </el-container>
 </template>
 <script>
-    // import _ from 'lodash'
-    //import search from "./views/search";
-    //import login from "./components/login";
     import Weather from "../../components/weather";
+    import Search from "../search";
+
     export default {
         name: 'App',
-        components: {Weather},
+        components: {Search, Weather},
         data() {
             return {
 

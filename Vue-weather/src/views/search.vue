@@ -1,7 +1,13 @@
 <template>
     <div class="out_div">
-            <el-button style="width: 20%;margin: 10px;">添加</el-button>
-        <div style="margin: auto;width: 80%;">
+
+        <div style="margin: auto;width: 40%">
+            <el-button style="width: 20%;margin-top: 10px;">添加</el-button>
+            <el-input v-model="input" placeholder="请输入内容" style="margin-left: 3px;width:50%;margin-top: 10px;margin-bottom: 5px"></el-input>
+            <el-button @click="get_info" style="width: 20%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px;">搜索</el-button>
+        </div>
+
+        <div style="margin: auto;width: 90%;width: 90%;padding-left: 200px">
         <el-table
                 :data="basic_info"
                 border
@@ -113,10 +119,13 @@
                           [0]:  { validator: mail_validate, trigger: 'blur' } ,
                           [1]:{ validator: user_validate, trigger: 'blur' },
                           [2]:{ validator: passward_validate, trigger: 'blur' }
+                    //{ validator: user_validate, trigger: 'blur' }{ validator: passward_validate, trigger: 'blur' }
                 },
                 dialogVisible:false,
                 is_disabled:true,
 
+                baseUrl:'127.0.0.1',
+                input:''
             }
         },
         methods:{
@@ -135,7 +144,7 @@
                 this.this_index=data
 
                 let that =this
-                axios.get(that.baseUrl+'http://182.92.66.200:8888/ssm-manage-system/user/delete',{//请求并且发送要删除的数据
+                axios.get(that.baseUrl+'/api/delete_info',{//请求并且发送要删除的数据
                     params:{info:that.basic_info[that.this_index]}
                 }).then(response=>{//返回的状态码
                     let code=response.code
@@ -202,7 +211,7 @@
         width: 100%;
     }
     .out_div{
-        background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
+        margin: auto;
         height: 900px;
     }
 
