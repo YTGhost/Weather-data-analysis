@@ -1,6 +1,5 @@
 <template>
     <div class="out_div">
-
         <div style="margin: auto;width: 30%">
             <el-button style="width: 20%;margin-top: 10px;">添加</el-button>
             <el-input v-model="input" placeholder="请输入内容" style="margin-left: 3px;width:50%;margin-top: 10px;margin-bottom: 5px"></el-input>
@@ -8,14 +7,57 @@
         </div>
 
         <div style="margin: auto;width: 80%;">
+            <el-table
+                    :data="basic_info"
+                    border
+                    type="index"
+                    style="width: 75%;border-radius: 35px;height: 720px;padding-left: 30px;padding-right: 30px;padding-top: 30px;float: left">
+                <el-table-column
+                        type="index"
+                        style="width: 20px">
+                    <template slot-scope="scope">
+                        {{scope.$index}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="[0]"
+                        label="邮箱"
+                        width="200px">
+                </el-table-column>
+                <el-table-column
+                        prop="[1]"
+                        label="用户名"
+                        width="150px">
+                </el-table-column>
+                <el-table-column
+                        prop="[2]"
+                        label="密码"
+                        width="150px">
+                </el-table-column>
+                <el-table-column
+                        label="操作"
+                        width="300px">
+                    <template slot-scope="scope">
+                        <el-button class="el-icon-edit" style="margin-right: 5%" @click="edit_users(scope.$index)"></el-button>
+                        <el-button class="el-icon-more" style="margin-right: 5%" @click="view_users(scope.$index)"></el-button>
+                        <el-button class="el-icon-delete" style="margin-right: 5%" @click="delete_users(scope.$index)">
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <side-bar style="float: right;width: 22%"></side-bar>
+
+        </div>
+
+        <div style="margin: auto;width: 60%;">
         <el-table
                 :data="basic_info"
                 border
                 type="index"
-                style="width: 75%;border-radius: 35px;height: 720px;padding-left: 30px;padding-right: 30px;padding-top: 30px;float: left">
+                style="width: 100%;border-radius: 35px;height: 720px;padding-left: 30px;padding-right: 30px;padding-top: 30px">
             <el-table-column
                     type="index"
-                    style="width: 20px">
+                    width="200">
                 <template slot-scope="scope">
                     {{scope.$index}}
                 </template>
@@ -28,12 +70,12 @@
             <el-table-column
                     prop="[1]"
                     label="用户名"
-                    width="150px">
+                    width="200px">
             </el-table-column>
             <el-table-column
                     prop="[2]"
                     label="密码"
-                    width="150px">
+                    width="200px">
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -46,10 +88,9 @@
                 </template>
             </el-table-column>
         </el-table>
+            <el-button style="width: 100px;margin-top: 20px;font-size: larger">添加</el-button>
             <side-bar style="float: right;width: 22%"></side-bar>
-
         </div>
-
         <el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
@@ -77,11 +118,10 @@
 
 <script>
     import axios from 'axios'
-    import SideBar from "../components/sideBar";
-
+    import sideBar from "../components/sideBar";
     export default {
         name: "search",
-        components: {SideBar},
+        components:{sideBar},
         data(){
            var mail_validate = (rule, value, callback) => {
                 if (value.length === 0) {
@@ -211,7 +251,6 @@
         margin-left: auto;
         position: relative;
         text-align: center;
-        width: 100%;
     }
     .out_div{
         background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
