@@ -46,7 +46,6 @@
                 </template>
             </el-table-column>
         </el-table>
-            <side-bar style="float: right;width: 22%"></side-bar>
 
         </div>
 
@@ -77,11 +76,9 @@
 
 <script>
     import axios from 'axios'
-    import SideBar from "../components/sideBar";
 
     export default {
         name: "search",
-        components: {SideBar},
         data(){
            var mail_validate = (rule, value, callback) => {
                 if (value.length === 0) {
