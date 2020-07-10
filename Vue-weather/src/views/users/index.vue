@@ -10,7 +10,9 @@
                     </el-menu-item>
                 </el-menu>
             </el-aside>
-            <weather></weather>
+            <el-main>
+                <weather></weather>
+            </el-main>
         </el-container>
     </el-container>
     
