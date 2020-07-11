@@ -1,10 +1,11 @@
 <template>
   <div>
+    <div style="width: 80%;float: left">
     <el-table
             :data="basic_info"
             border
             type="index"
-            style="width: 75%;border-radius: 35px;height: 720px;padding-left: 30px;padding-right: 30px;padding-top: 30px;float: left">
+            style="border-radius: 35px;height: 550px;padding-left: 30px;padding-right: 30px;padding-top: 30px;float: left">
       <el-table-column
               type="index"
               style="width: 20px">
@@ -34,7 +35,8 @@
       </el-table-column>
       <el-table-column
               label="操作"
-              width="300px">
+              width="300px"
+              style="float: left">
         <template slot-scope="scope">
           <el-button class="el-icon-edit" style="margin-right: 5%" @click="edit_users(scope.$index)"></el-button>
           <el-button class="el-icon-more" style="margin-right: 5%" @click="view_users(scope.$index)"></el-button>
@@ -42,7 +44,10 @@
           </el-button>
         </template>
       </el-table-column>
+
     </el-table>
+      <el-button style="float: left;width:100%;height: 50px;font-size: 25px;border-radius: 25px;margin-top: 5px">增加</el-button>
+    </div>
 
     <el-dialog
             title="提示"

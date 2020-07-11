@@ -1,5 +1,5 @@
 <template>
-    <div class='page' style="height: 725px;padding-top: 180px">
+    <div class='page' style="padding-top: 180px;height:76%">
         <div class="login-wrapper">
             <div class="header">Weather Forecast</div>
             <div class="form-wrapper">
