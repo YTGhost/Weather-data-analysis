@@ -73,7 +73,6 @@
 
 <script>
     import axios from 'axios'
-
     export default {
         name: "role_table.vue",
         data(){
