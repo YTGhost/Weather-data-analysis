@@ -48,7 +48,8 @@ export default {
                 window.document.cookie=that.username
                 let data=res.data
                 if( data.id=== 1){
-                        router.push({name:'role_table'})
+                        //router.push({name:'role_table'})
+                        router.push({path:`users`})
                     }else if(data.id===2){
                         router.push({path:`users`})
                     }
