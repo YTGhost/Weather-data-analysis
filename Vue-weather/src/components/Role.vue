@@ -1,14 +1,10 @@
 <template>
-    <div class="out_div">
 
-        <div style="margin: auto;width: 40%">
-            <el-button style="width: 20%;margin-top: 10px;">添加</el-button>
-            <el-input v-model="input" placeholder="请输入内容" style="margin-left: 3px;width:50%;margin-top: 10px;margin-bottom: 5px"></el-input>
-            <el-button @click="get_info" style="width: 20%;margin-left: 3px;margin-top: 10px;margin-bottom: 5px;">搜索</el-button>
-        </div>
+    <div>
+        <el-card><el-button style="display: block; margin-left: 40%" type="primary">添加</el-button></el-card>
 
-        <div style="margin: auto;width: 90%;width: 90%;padding-left: 200px">
         <el-table
+                v-if="show"
                 :data="basic_info"
                 border
                 type="index"
@@ -39,15 +35,16 @@
                     label="操作"
                     width="300px">
                 <template slot-scope="scope">
-                    <el-button class="el-icon-edit" style="margin-right: 5%" @click="edit_users(scope.$index)"></el-button>
-                    <el-button class="el-icon-more" style="margin-right: 5%" @click="view_users(scope.$index)"></el-button>
-                    <el-button class="el-icon-delete" style="margin-right: 5%" @click="delete_users(scope.$index)">
+                    <el-button class="el-icon-edit" type="primary" v-if="permission.indexOf(1)!==-1"
+                               style="margin-right: 5%" @click="edit_users(scope.$index)"></el-button>
+                    <el-button class="el-icon-more" type="warning" v-if="permission.indexOf(2)!==-1"
+                               style="margin-right: 5%" @click="view_users(scope.$index)"></el-button>
+                    <el-button class="el-icon-delete" type="danger" v-if="permission.indexOf(3)!==-1"
+                               style="margin-right: 5%" @click="delete_users(scope.$index)">
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
-
-        </div>
 
         <el-dialog
                 title="提示"
@@ -76,11 +73,10 @@
 
 <script>
     import axios from 'axios'
-
     export default {
-        name: "search",
+        name: "role_table.vue",
         data(){
-           var mail_validate = (rule, value, callback) => {
+            var mail_validate = (rule, value, callback) => {
                 if (value.length === 0) {
                     callback(new Error('请输入邮箱'));
                 } else {
@@ -89,7 +85,7 @@
                         callback(new Error('邮箱格式不对'));
                     }
                 }
-               callback()
+                callback()
             };
             var user_validate = (rule, value, callback) => {
                 console.log(value)
@@ -116,19 +112,39 @@
                 this_index:-1,
                 //basic_info:[],
                 rules:{//表单验证
-                          [0]:  { validator: mail_validate, trigger: 'blur' } ,
-                          [1]:{ validator: user_validate, trigger: 'blur' },
-                          [2]:{ validator: passward_validate, trigger: 'blur' }
-                    //{ validator: user_validate, trigger: 'blur' }{ validator: passward_validate, trigger: 'blur' }
+                    [0]: { validator: mail_validate, trigger: 'blur' } ,
+                    [1]:{ validator: user_validate, trigger: 'blur' },
+                    [2]:{ validator: passward_validate, trigger: 'blur' }
                 },
                 dialogVisible:false,
                 is_disabled:true,
+                role:[],
+                permission:[],
+                show:false,
+                usename:document.cookie
 
-                baseUrl:'127.0.0.1',
-                input:''
             }
         },
+       mounted() {
+             this.init()
+
+        },
         methods:{
+             init(){
+                let that =this
+                 axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{params:{
+                        username:this.usename
+                    }}).then(response=>{
+                    let data=response.data
+                    that.role=data.data.roles
+                     let permission=this.role[0].permissions
+
+                     for(var x=0;x<permission.length;x++){
+                         this.permission.push(permission[x].id)
+                     }
+                     this.show=true
+                })
+            },
             edit_users(data){
                 this.this_index=data
                 this.dialogVisible=true
@@ -144,7 +160,7 @@
                 this.this_index=data
 
                 let that =this
-                axios.get(that.baseUrl+'/api/delete_info',{//请求并且发送要删除的数据
+                axios.get(that.baseUrl+'http://182.92.66.200:8888/ssm-manage-system/user/delete',{//请求并且发送要删除的数据
                     params:{info:that.basic_info[that.this_index]}
                 }).then(response=>{//返回的状态码
                     let code=response.code
@@ -169,6 +185,7 @@
                     }
                 })
             },
+
             modify(){
                 if(this.is_disabled===true)//判断是否为编辑
                     return
@@ -211,7 +228,7 @@
         width: 100%;
     }
     .out_div{
-        margin: auto;
+        background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
         height: 900px;
     }
 
