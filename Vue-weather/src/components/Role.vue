@@ -1,8 +1,10 @@
 <template>
 
     <div>
-        <el-button style="display: block; margin-left: 30%">添加</el-button>
+        <el-card><el-button style="display: block; margin-left: 40%" type="primary">添加</el-button></el-card>
+
         <el-table
+                v-if="show"
                 :data="basic_info"
                 border
                 type="index"
@@ -33,9 +35,12 @@
                     label="操作"
                     width="300px">
                 <template slot-scope="scope">
-                    <el-button class="el-icon-edit" style="margin-right: 5%" @click="edit_users(scope.$index)"></el-button>
-                    <el-button class="el-icon-more" style="margin-right: 5%" @click="view_users(scope.$index)"></el-button>
-                    <el-button class="el-icon-delete" style="margin-right: 5%" @click="delete_users(scope.$index)">
+                    <el-button class="el-icon-edit" type="primary" v-if="permission.indexOf(1)!==-1"
+                               style="margin-right: 5%" @click="edit_users(scope.$index)"></el-button>
+                    <el-button class="el-icon-more" type="warning" v-if="permission.indexOf(2)!==-1"
+                               style="margin-right: 5%" @click="view_users(scope.$index)"></el-button>
+                    <el-button class="el-icon-delete" type="danger" v-if="permission.indexOf(3)!==-1"
+                               style="margin-right: 5%" @click="delete_users(scope.$index)">
                     </el-button>
                 </template>
             </el-table-column>
@@ -114,20 +119,33 @@
                 },
                 dialogVisible:false,
                 is_disabled:true,
+                role:[],
+                permission:[],
+                show:false,
+                usename:document.cookie
 
             }
         },
-        mounted() {
-            let that =this
-            axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{params:{
-                    username:Window.document.cookie,
-                }}).then(response=>{
-                let data=response.data
-                that.role=data.data.roles
+       mounted() {
+             this.init()
 
-            })
         },
         methods:{
+             init(){
+                let that =this
+                 axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{params:{
+                        username:this.usename
+                    }}).then(response=>{
+                    let data=response.data
+                    that.role=data.data.roles
+                     let permission=this.role[0].permissions
+
+                     for(var x=0;x<permission.length;x++){
+                         this.permission.push(permission[x].id)
+                     }
+                     this.show=true
+                })
+            },
             edit_users(data){
                 this.this_index=data
                 this.dialogVisible=true

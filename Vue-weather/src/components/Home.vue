@@ -5,15 +5,15 @@
             <el-container>
                 <el-aside width="200px">
                     <el-menu default-active="1" class="el-menu-vertical-demo">
-<!--                        <el-menu-item index="1" v-if="num.indexOf(1)!==-1" @click="toUser">-->
-<!--                            <span slot="title">用户管理</span>-->
-<!--                        </el-menu-item>-->
-<!--                        <el-menu-item index="2" v-if="num.indexOf(2)!==-1" @click="toDept">-->
-<!--                            <span slot="title">部门管理</span>-->
-<!--                        </el-menu-item>-->
-<!--                        <el-menu-item index="3" v-if="num.indexOf(3)!==-1" @click="toRole">-->
-<!--                            <span slot="title">角色管理</span>-->
-<!--                        </el-menu-item>-->
+                        <!--<el-menu-item index="1" v-if="num.indexOf(1)!==-1" @click="toUser">
+                           <span slot="title">用户管理</span>
+                        </el-menu-item>
+                       <el-menu-item index="2" v-if="num.indexOf(2)!==-1" @click="toDept">
+                            <span slot="title">部门管理</span>
+                       </el-menu-item>
+                       <el-menu-item index="3" v-if="num.indexOf(3)!==-1" @click="toRole">
+                           <span slot="title">角色管理</span>
+                      </el-menu-item>-->
                         <el-menu-item index="1" @click="toUser">
                             <span slot="title">用户管理</span>
                         </el-menu-item>
