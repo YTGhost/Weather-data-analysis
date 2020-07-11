@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import weather from "../components/weather";
 import login from "../components/login";
+import role_table from "../components/role_table";
 Vue.use(VueRouter)
 
   const routes = [
@@ -14,6 +15,10 @@ Vue.use(VueRouter)
       path: '/weather',
       name: 'weather',
       component: weather
+    },{
+      path: '/role_table',
+      name: 'role_table',
+      component: role_table
     },
   {
     path: '/about',

@@ -1,16 +1,17 @@
 <template>
     <div>
-        <search></search>
+        <role_table></role_table>
     </div>
 </template>
 
 <script>
-import search from "../search";
+//import search from "../search";
 import axios from 'axios'
+import role_table from "../../components/role_table";
 //import router from "../router";
     export default {
         name: "index.vue",
-        components: {search},
+        components: {role_table},
         data(){
             return{
                 data:window.document.cookie,

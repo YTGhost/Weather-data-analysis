@@ -1,17 +1,17 @@
 <template>
     <div id="app">
-        <el-container v-if="show">
+        <el-container>
             <el-header style="height: 80px;">天气预测</el-header>
             <el-container>
                 <el-aside width="200px">
                     <el-menu default-active="1" class="el-menu-vertical-demo">
-                        <el-menu-item index="1">
+                        <el-menu-item index="1" v-if="num.indexOf(1)!==-1">
                             <span slot="title">用户管理</span>
                         </el-menu-item>
-                        <el-menu-item index="2">
+                        <el-menu-item index="2" v-if="num.indexOf(2)!==-1">
                             <span slot="title">部门管理</span>
                         </el-menu-item>
-                        <el-menu-item index="3">
+                        <el-menu-item index="3" v-if="num.indexOf(3)!==-1" @click="to_role">
                             <span slot="title">角色管理</span>
                         </el-menu-item>
                         <el-menu-item index="4">
@@ -24,31 +24,23 @@
                 </el-main>
             </el-container>
         </el-container>
-        <router-view v-else></router-view>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import router from "./router";
     export default {
         name: 'App',
         components:{},
         data() {
             return{
-                show:false
+                show:true,
+                num:[]
             }
         },
-        created() {
-            let path=this.$route.path
-            console.log(path)
-            if (path==='/'){
-                this.show=false
-            }
-            else{
-                this.show=true
-            }
-        },
-        beforeCreate() {
+         mounted() {
+            this.getPersonData()
         },
         methods:{
             getPersonData(){
@@ -62,6 +54,9 @@
                         that.num.push(that.role[i].id)
                     }
                 })
+            },
+            to_role(){
+                router.push('role_table')
             }
         }
     }
