@@ -108,7 +108,7 @@
                 this_index:-1,
                 //basic_info:[],
                 rules:{//表单验证
-                    [0]:  { validator: mail_validate, trigger: 'blur' } ,
+                    [0]: { validator: mail_validate, trigger: 'blur' } ,
                     [1]:{ validator: user_validate, trigger: 'blur' },
                     [2]:{ validator: passward_validate, trigger: 'blur' }
                 },
@@ -124,7 +124,7 @@
                 }}).then(response=>{
                 let data=response.data
                 that.role=data.data.roles
-                
+
             })
         },
         methods:{
