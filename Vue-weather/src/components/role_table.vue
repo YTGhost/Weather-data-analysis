@@ -1,5 +1,7 @@
 <template>
+
     <div>
+        <el-button style="display: block; margin-left: 30%">添加</el-button>
         <el-table
                 :data="basic_info"
                 border
@@ -115,6 +117,16 @@
 
             }
         },
+        mounted() {
+            let that =this
+            axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{params:{
+                    username:Window.document.cookie,
+                }}).then(response=>{
+                let data=response.data
+                that.role=data.data.roles
+
+            })
+        },
         methods:{
             edit_users(data){
                 this.this_index=data
@@ -156,6 +168,7 @@
                     }
                 })
             },
+
             modify(){
                 if(this.is_disabled===true)//判断是否为编辑
                     return
