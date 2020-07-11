@@ -4,7 +4,6 @@
         <el-card><el-button style="display: block; margin-left: 40%" type="primary">添加</el-button></el-card>
 
         <el-table
-                v-if="show"
                 :data="basic_info"
                 border
                 type="index"
