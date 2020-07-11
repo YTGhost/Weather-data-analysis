@@ -7,7 +7,7 @@
 <script>
 //import search from "../search";
 import axios from 'axios'
-import role_table from "../../components/role_table";
+import role_table from "../../components/Role";
 //import router from "../router";
     export default {
         name: "index.vue",

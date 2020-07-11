@@ -22,7 +22,7 @@
     </el-container>
 </template>
 <script>
-    import Weather from "../../components/weather";
+    import Weather from "../../components/Weather";
     import Search from "../search";
 
     export default {
