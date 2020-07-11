@@ -1,10 +1,8 @@
 package com.hihia.dao;
 
 import com.hihia.domain.Role;
-import org.apache.ibatis.annotations.Many;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import com.hihia.domain.User_Role;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +29,52 @@ public interface RoleDao {
             @Result(property = "menus", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.MenusDao.findMenuByRoleId"))
     })
     public List<Role> findRoleByUserId(String userId);
+
+    /**
+     * 获取角色列表
+     * @return
+     */
+    @Select("select * from roles")
+    @Results({
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "roleName", column = "roleName"),
+            @Result(property = "permissions", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.PermissionDao.findPermissionByRoleId")),
+            @Result(property = "menus", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.MenusDao.findMenuByRoleId"))
+    })
+    public List<Role> findAll();
+
+    /**
+     * 通过角色id来获取角色
+     * @param id
+     * @return
+     */
+    @Select("select * from roles where id=#{id}")
+    @Results({
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "roleName", column = "roleName"),
+            @Result(property = "permissions", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.PermissionDao.findPermissionByRoleId")),
+            @Result(property = "menus", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.MenusDao.findMenuByRoleId"))
+    })
+    public List<Role> findRoleByRoleId(String id);
+
+    /**
+     * 检查该用户是否已是该角色
+     * @param userId
+     * @param roleId
+     * @return
+     */
+    @Select("select * from users_roles where userId=#{userId} and roleId=#{roleId}")
+    @Results({
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "roleId", column = "roleId")
+    })
+    public User_Role checkRole(@Param("userId") String userId, @Param("roleId") String roleId);
+
+    /**
+     * 分配给用户角色
+     * @param userId
+     * @param roleId
+     */
+    @Insert("insert into users_roles (userId, roleId) values (#{userId}, #{roleId})")
+    public void assignRole(@Param("userId") String userId, @Param("roleId") String roleId);
 }

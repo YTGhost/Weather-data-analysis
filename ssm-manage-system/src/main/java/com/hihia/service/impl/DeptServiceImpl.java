@@ -2,6 +2,7 @@ package com.hihia.service.impl;
 
 import com.hihia.dao.DeptDao;
 import com.hihia.domain.Dept;
+import com.hihia.domain.User_Dept;
 import com.hihia.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,20 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public List<Dept> findDeptByUserId(String id) {
         return deptDao.findDeptByUserId(id);
+    }
+
+    @Override
+    public List<Dept> findAll() {
+        return deptDao.findAll();
+    }
+
+    @Override
+    public User_Dept checkDept(String userId, String deptId) {
+        return deptDao.checkDept(userId, deptId);
+    }
+
+    @Override
+    public void assignDept(String userId, String deptId) {
+        deptDao.assignDept(userId, deptId);
     }
 }
