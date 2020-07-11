@@ -4,7 +4,8 @@
             <el-header style="height: 80px;">天气预测</el-header>
             <el-container>
                 <el-aside width="200px">
-                    <el-menu default-active="1" class="el-menu-vertical-demo">
+                    <el-menu  default-active="$route.path"
+                             class="el-menu-vertical-demo">
                         <!--<el-menu-item index="1" v-if="num.indexOf(1)!==-1" @click="toUser">
                            <span slot="title">用户管理</span>
                         </el-menu-item>
@@ -14,16 +15,16 @@
                        <el-menu-item index="3" v-if="num.indexOf(3)!==-1" @click="toRole">
                            <span slot="title">角色管理</span>
                       </el-menu-item>-->
-                        <el-menu-item index="1" @click="toUser">
+                        <el-menu-item index="/user" @click="toUser">
                             <span slot="title">用户管理</span>
                         </el-menu-item>
-                        <el-menu-item index="2" @click="toDept">
+                        <el-menu-item index="/dept" @click="toDept">
                             <span slot="title">部门管理</span>
                         </el-menu-item>
-                        <el-menu-item index="3" @click="toRole">
+                        <el-menu-item index="/role" @click="toRole">
                             <span slot="title">角色管理</span>
                         </el-menu-item>
-                        <el-menu-item index="4" @click="toWeather">
+                        <el-menu-item index="/weather" @click="toWeather">
                             <span slot="title">天气数据</span>
                         </el-menu-item>
                     </el-menu>
@@ -44,11 +45,12 @@
         data() {
             return{
                 show:true,
-                num:[]
+                num:[],
             }
         },
         mounted() {
             this.getPersonData()
+            console.log('yyy',this.$route.path)
         },
         methods:{
             getPersonData(){
