@@ -6,8 +6,10 @@ package com.hihia.controller;
  * @email 18221221@bjtu.edu.cn
  */
 
+import com.hihia.dao.UserDao;
 import com.hihia.domain.Role;
 import com.hihia.domain.UserInfo;
+import com.hihia.domain.User_Role;
 import com.hihia.service.RoleService;
 import com.hihia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,44 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+
+    @RequestMapping(value = "/modify/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Map<String, Object> modifyUserInfo(@PathVariable(name = "id") String id, UserInfo userInfo){
+        String username = userInfo.getUsername();
+        String password = userInfo.getPassword();
+        String email = userInfo.getEmail();
+        userService.modifyUserInfo(id, username, password, email);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "修改成功");
+        map.put("data", null);
+        return map;
+    }
+
+    /**
+     * 用户管理中获取当前用户角色所应获取到的用户信息
+     * @return
+     */
+    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> findAll(User_Role user_role){
+        String userId = user_role.getUserId();
+        String roleId = user_role.getRoleId();
+        List<UserInfo> userInfoList;
+        if("1".equals(roleId)){
+            userInfoList = userService.getUserInfoByRoot();
+        }else{
+            userInfoList = userService.getUserInfoByAdmin(userId);
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "查询成功");
+        map.put("data", userInfoList);
+        return map;
+    }
+
 
     /**
      * 查询指定用户名用户，GET请求

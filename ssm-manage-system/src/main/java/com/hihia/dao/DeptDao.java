@@ -1,6 +1,7 @@
 package com.hihia.dao;
 
 import com.hihia.domain.Dept;
+import com.hihia.domain.UserInfo;
 import com.hihia.domain.User_Dept;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,17 @@ public interface DeptDao {
      */
     @Select("select * from depts where id in (select deptId from users_depts where userId=#{userId})")
     public List<Dept> findDeptByUserId(String userId);
+
+    @Select("select * from users where id in (select userId from users_depts where deptId=#{deptId})")
+    @Results({
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "username", column = "username"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "roles", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.RoleDao.findRoleByUserId")),
+            @Result(property = "depts", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.DeptDao.findDeptByUserId"))
+    })
+    public List<UserInfo> findUserInfoByDeptId(String deptId);
 
     /**
      * 获取部门列表
@@ -51,4 +63,17 @@ public interface DeptDao {
      */
     @Insert("insert into users_depts (userId, deptId) values (#{userId}, #{deptId})")
     public void assignDept(@Param("userId") String userId, @Param("deptId") String deptId);
+
+    /**
+     * 创建新部门
+     * @param deptName
+     */
+    @Insert("insert into depts (deptName) values (#{deptName})")
+    public void createDept(String deptName);
+
+    @Select("select * from depts where deptName=#{deptName}")
+    public Dept checkDeptName(String deptName);
+
+    @Update("update depts set deptName=#{deptName} where id=#{id}")
+    public void modifyDept(@Param("id") String id, @Param("deptName") String deptName);
 }

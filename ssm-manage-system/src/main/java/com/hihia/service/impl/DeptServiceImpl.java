@@ -40,4 +40,19 @@ public class DeptServiceImpl implements DeptService {
     public void assignDept(String userId, String deptId) {
         deptDao.assignDept(userId, deptId);
     }
+
+    @Override
+    public void createDept(String deptName) {
+        deptDao.createDept(deptName);
+    }
+
+    @Override
+    public Dept checkDeptName(String deptName) {
+        return deptDao.checkDeptName(deptName);
+    }
+
+    @Override
+    public void modifyDept(String id, String deptName) {
+        deptDao.modifyDept(id, deptName);
+    }
 }

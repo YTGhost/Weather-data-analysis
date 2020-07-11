@@ -37,12 +37,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public User_Role checkRole(String userId, String roleId) {
-        return roleDao.checkRole(userId, roleId);
+    public User_Role checkRole(String userId) {
+        return roleDao.checkRole(userId);
     }
 
     @Override
     public void assignRole(String userId, String roleId) {
         roleDao.assignRole(userId, roleId);
+    }
+
+    @Override
+    public void changeRole(String userId, String roleId) {
+        roleDao.changeRole(userId, roleId);
     }
 }

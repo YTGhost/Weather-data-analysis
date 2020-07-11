@@ -66,9 +66,11 @@ public class RoleController {
     public Map<String, Object> assignRole(User_Role user_role){
         String userId = user_role.getUserId();
         String roleId = user_role.getRoleId();
-        User_Role sign = roleService.checkRole(userId, roleId);
+        User_Role sign = roleService.checkRole(userId);
         if(sign == null){
             roleService.assignRole(userId, roleId);
+        }else{
+            roleService.changeRole(userId, roleId);
         }
         Map<String, Object> map = new HashMap<>();
         map.put("code", 1);

@@ -1,6 +1,8 @@
 package com.hihia.service.impl;
 
+import com.hihia.dao.DeptDao;
 import com.hihia.dao.UserDao;
+import com.hihia.domain.Dept;
 import com.hihia.domain.UserInfo;
 import com.hihia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private DeptDao deptDao;
 
     @Override
     public UserInfo findByUsername(String username) {
@@ -50,5 +55,30 @@ public class UserServiceImpl implements UserService {
         userDao.deleteInfoById(id);
         userDao.deleteDeptLinkById(id);
         userDao.deleteRoleLinkById(id);
+    }
+
+    @Override
+    public List<UserInfo> getUserInfoByRoot() {
+        return userDao.getUserInfoByRoot();
+    }
+
+    @Override
+    public List<UserInfo> getUserInfoByAdmin(String userId) {
+        List<Dept> depts = deptDao.findDeptByUserId(userId);
+        List<UserInfo> userInfoList = null;
+        for(int i = 0; i < depts.size(); i++)
+        {
+            if(i == 0){
+                userInfoList = deptDao.findUserInfoByDeptId(depts.get(i).getId().toString());
+            }else{
+                userInfoList.addAll(deptDao.findUserInfoByDeptId(depts.get(i).getId().toString()));
+            }
+        }
+        return userInfoList;
+    }
+
+    @Override
+    public void modifyUserInfo(String id, String username, String password, String email) {
+        userDao.modifyUserInfo(id, username, password, email);
     }
 }

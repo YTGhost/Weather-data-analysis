@@ -39,4 +39,24 @@ public interface DeptService {
      * @param deptId
      */
     public void assignDept(String userId, String deptId);
+
+    /**
+     * 创建部门
+     * @param deptName
+     */
+    public void createDept(String deptName);
+
+    /**
+     * 检查部门名字是否已存在
+     * @param deptName
+     * @return
+     */
+    public Dept checkDeptName(String deptName);
+
+    /**
+     * 修改部门信息
+     * @param id
+     * @param deptName
+     */
+    public void modifyDept(String id, String deptName);
 }
