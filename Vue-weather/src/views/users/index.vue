@@ -14,7 +14,6 @@
             </el-aside>
             <!--主要内容-->
             <el-main>
-                <search></search>
                 <weather></weather>
             </el-main>
 
@@ -23,11 +22,10 @@
 </template>
 <script>
     import Weather from "../../components/weather";
-    import Search from "../search";
 
     export default {
         name: 'App',
-        components: {Search, Weather},
+        components: {Weather},
         data() {
             return {
 

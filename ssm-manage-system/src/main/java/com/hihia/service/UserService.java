@@ -17,4 +17,37 @@ public interface UserService {
      * @return
      */
     public UserInfo findByUsername(String username);
+
+    /**
+     * 查询用户名是否存在
+     * @param username
+     * @return
+     */
+    public UserInfo checkUsername(String username);
+
+    /**
+     * 查询邮箱是否存在
+     * @param email
+     * @return
+     */
+    public UserInfo checkEmail(String email);
+
+    /**
+     * 创建普通用户
+     * @param userInfo
+     */
+    public void createUser(UserInfo userInfo);
+
+    /**
+     * 通过用户名查找其id
+     * @param username
+     * @return
+     */
+    public String findIdByUsername(String username);
+
+    /**
+     * 通过用户id来删除用户
+     * @param id
+     */
+    public void deleteById(String id);
 }
