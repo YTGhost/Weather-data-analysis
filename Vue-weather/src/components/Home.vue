@@ -38,7 +38,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'Home',
         components:{},
@@ -55,7 +54,7 @@
         methods:{
             getPersonData(){
                 let that =this
-                axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find',{params:{
+                this.$http.get('user/find',{params:{
                         username:that.data,
                     }}).then(response=>{
                     let data=response.data

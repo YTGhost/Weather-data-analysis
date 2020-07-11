@@ -71,9 +71,36 @@ public interface DeptDao {
     @Insert("insert into depts (deptName) values (#{deptName})")
     public void createDept(String deptName);
 
+    /**
+     * 检查是否已经有该部门
+     * @param deptName
+     * @return
+     */
     @Select("select * from depts where deptName=#{deptName}")
     public Dept checkDeptName(String deptName);
 
+    /**
+     * 修改部门基本信息
+     * @param id
+     * @param deptName
+     */
     @Update("update depts set deptName=#{deptName} where id=#{id}")
     public void modifyDept(@Param("id") String id, @Param("deptName") String deptName);
+
+    /**
+     * 删除部门基本信息
+     * @param id
+     */
+    @Delete("delete from depts where id=#{id}")
+    public void deleteDeptInfo(String id);
+
+    /**
+     * 删除部门和用户之间的联系
+     * @param id
+     */
+    @Delete("delete from users_depts where userId=#{id}")
+    public void deleteDeptAsso(String id);
+
+    @Select("select * from depts where id=#{id}")
+    public Dept findDeptById(String id);
 }

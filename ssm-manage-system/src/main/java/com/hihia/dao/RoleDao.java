@@ -78,6 +78,26 @@ public interface RoleDao {
     @Insert("insert into users_roles (userId, roleId) values (#{userId}, #{roleId})")
     public void assignRole(@Param("userId") String userId, @Param("roleId") String roleId);
 
+    /**
+     * 更改用户角色
+     * @param userId
+     * @param roleId
+     */
     @Update("update users_roles set roleId=#{roleId} where userId=#{userId}")
     public void changeRole(@Param("userId") String userId, @Param("roleId") String roleId);
+
+    /**
+     * 检查角色是否已经被创建
+     * @param roleName
+     * @return
+     */
+    @Select("select * from roles where roleName=#{roleName}")
+    public Role checkRoleName(String roleName);
+
+    /**
+     * 创建角色
+     * @param roleName
+     */
+    @Insert("insert into roles (roleName) values (#{roleName})")
+    public void createRole(String roleName);
 }

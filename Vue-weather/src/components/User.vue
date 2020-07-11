@@ -1,210 +1,283 @@
 <template>
   <div>
-    <div style="width: 80%;float: left">
-    <el-table
-            :data="basic_info"
-            border
-            type="index"
-            style="border-radius: 35px;height: 550px;padding-left: 30px;padding-right: 30px;padding-top: 30px;float: left">
-      <el-table-column
-              type="index"
-              style="width: 20px">
-        <template slot-scope="scope">
-          {{scope.$index+1}}
-        </template>
-      </el-table-column>
-      <el-table-column
-              prop="[0]"
-              label="姓名"
-              width="100px">
-      </el-table-column>
-      <el-table-column
-              prop="[1]"
-              label="邮箱"
-              width="200px">
-      </el-table-column>
-      <el-table-column
-              prop="[2]"
-              label="电话"
-              width="150px">
-      </el-table-column>
-      <el-table-column
-              prop="[3]"
-              label="角色"
-              width="150px">
-      </el-table-column>
-      <el-table-column
-              label="操作"
-              width="300px"
-              style="float: left">
-        <template slot-scope="scope">
-          <el-button class="el-icon-edit" style="margin-right: 5%" @click="edit_users(scope.$index)"></el-button>
-          <el-button class="el-icon-more" style="margin-right: 5%" @click="view_users(scope.$index)"></el-button>
-          <el-button class="el-icon-delete" style="margin-right: 5%" @click="delete_users(scope.$index)">
-          </el-button>
-        </template>
-      </el-table-column>
+    <!--面包屑导航区域-->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+    </el-breadcrumb>
 
-    </el-table>
-      <el-button style="float: left;width:100%;height: 50px;font-size: 25px;border-radius: 25px;margin-top: 5px">增加</el-button>
-    </div>
+    <!--卡片视图区域-->
+    <el-card style="margin-top: 10px">
+      <!--搜索与添加区域-->
+      <el-row :gutter="20" style="margin-bottom: 10px">
+        <el-col :span="4">
+          <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
+        </el-col>
+      </el-row>
 
+      <!--用户列表区域-->
+      <el-table :data="userList" border stripe>
+        <el-table-column label="id" prop="id"></el-table-column>
+        <el-table-column label="用户名" prop="username"></el-table-column>
+        <el-table-column label="密码" prop="password"></el-table-column>
+        <el-table-column label="邮箱" prop="email"></el-table-column>
+        <el-table-column label="操作" width="180px">
+          <template slot-scope="scope">
+            <!--修改用户按钮-->
+            <el-tooltip effect="dark" content="修改用户" placement="top" :enterable="false">
+              <el-button type="primary" icon="el-icon-edit" size="mini"
+                         @click="showEditDialog(scope.row.id)"></el-button>
+            </el-tooltip>
+            <!--删除用户按钮-->
+            <el-tooltip effect="dark" content="删除用户" placement="top" :enterable="false">
+              <el-button type="danger" icon="el-icon-delete" size="mini"
+                         @click="removeDeptById(scope.row.id)"></el-button>
+            </el-tooltip>
+            <!--分配角色按钮-->
+            <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="setRole(scope.row)"></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--            &lt;!&ndash;分页区域&ndash;&gt;-->
+      <!--            <el-pagination-->
+      <!--                    @size-change="handleSizeChange"-->
+      <!--                    @current-change="handleCurrentChange"-->
+      <!--                    :current-page="queryInfo.pagenum"-->
+      <!--                    :page-sizes="[1, 2, 5, 10]"-->
+      <!--                    :page-size=queryInfo.pagesize-->
+      <!--                    layout="total, sizes, prev, pager, next, jumper"-->
+      <!--                    :total=total>-->
+      <!--            </el-pagination>-->
+    </el-card>
+
+    <!--添加部门的对话框-->
     <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            v-if="this_index >= 0"
-    >
-      <el-form  :model="basic_info[this_index]" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="姓名" prop="[0]">
-          <el-input :disabled="is_disabled" v-model="basic_info[this_index][0]"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="[1]">
-          <el-input :disabled="is_disabled" v-model="basic_info[this_index][1]"></el-input>
-        </el-form-item>
-        <el-form-item label="电话" prop="[2]">
-          <el-input :disabled="is_disabled" v-model="basic_info[this_index][2]"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" prop="[3]">
-          <el-input :disabled="is_disabled" v-model="basic_info[this_index][3]"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="modify">确 定</el-button>
+            title="添加部门"
+            :visible.sync="addDialogVisible"
+            width="50%"
+            @close="addDialogClosed">
+      <!--内容主体区-->
+      <el-form :model="addForm" :rules="rules" ref="addFormRef" label-width="70px" class="demo-ruleForm">
+        <el-form-item label="部门名称" prop="deptName">
+          <el-input v-model="addForm.deptName"></el-input>
         </el-form-item>
       </el-form>
+      <!--底部区域-->
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="addDialogVisible= false">取 消</el-button>
+                <el-button type="primary" @click="addDept">确 定</el-button>
+            </span>
     </el-dialog>
+
+    <!--修改用户的对话框-->
+    <el-dialog
+            title="修改用户"
+            :visible.sync="editDialogVisible"
+            width="50%"
+            @close="editDialogClosed">
+      <el-form :model="editForm" :rules="rules" ref="editFormRef" label-width="70px">
+        <el-form-item label="id">
+          <el-input v-model="editForm.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="部门名称" prop="deptName">
+          <el-input v-model="editForm.deptName"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="editDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="editDeptInfo">确 定</el-button>
+              </span>
+    </el-dialog>
+
+    <!--        &lt;!&ndash;分配角色的对话框&ndash;&gt;-->
+    <!--        <el-dialog-->
+    <!--                title="分配角色"-->
+    <!--                :visible.sync="setRoleDialogVisible"-->
+    <!--                width="50%"-->
+    <!--                @close="setRoleDialogClosed">-->
+    <!--            <div>-->
+    <!--                <p>当前的用户: {{userInfo.username}}</p>-->
+    <!--                <p>当前的角色: {{userInfo.role_name}}</p>-->
+    <!--                <p>分配新角色:-->
+    <!--                    <el-select v-model="selectedRoleId" placeholder="请选择">-->
+    <!--                        <el-option-->
+    <!--                                v-for="item in rolesList"-->
+    <!--                                :key="item.id"-->
+    <!--                                :label="item.roleName"-->
+    <!--                                :value="item.id">-->
+    <!--                        </el-option>-->
+    <!--                    </el-select></p>-->
+    <!--            </div>-->
+    <!--            <span slot="footer" class="dialog-footer">-->
+    <!--        <el-button @click="setRoleDialogVisible = false">取 消</el-button>-->
+    <!--        <el-button type="primary" @click="saveRoleInfo">确 定</el-button>-->
+    <!--      </span>-->
+    <!--        </el-dialog>-->
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
   export default {
-    name: "user-management.vue",
-    data(){
-      var mail_validate = (rule, value, callback) => {
-        if (value.length === 0) {
-          callback(new Error('请输入邮箱'));
-        } else {
-          var verify = /^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
-          if (!verify.test(value)) {
-            callback(new Error('邮箱格式不对'));
+    name: "Dept",
+    data() {
+      // 校验部门是否存在
+      const rulesName = (rule, value, callback) => {
+        // 使用Axios进行校验
+        this.$http.get('dept/check', {
+          params: {
+            deptName: value
           }
-        }
-        callback()
-      };
-      var user_validate = (rule, value, callback) => {
-        console.log(value)
-        if (value === '') {
-          callback(new Error('请输入用户名'));
-        } else{
-          if(value.length<5)
-            callback(new Error('用户名长度必须大于5'))
-          callback()
-        }
-      };
-      var tel_validate = (rule, value, callback) => {
-        console.log(value)
-        if (value === '') {
-          callback(new Error('请输入电话号码'));
-        } else{
-          if(value.length!=11)
-            callback(new Error('电话号码必须为11位!'))
-          callback()
-        }
-      };
+        })
+                .then((res => {
+                  // 请求成功
+                  if (res.data.code === 1) {
+                    callback()
+                  } else {
+                    callback(new Error("部门已存在"))
+                  }
+                }))
+                .catch((err) => {
+                  // 如果请求失败则在控制台打印
+                  console.log(err)
+                })
+      }
       return {
-        basic_info:[[1,2,3,4],[5,6,7,8]],
-        this_index:-1,
+        basic_info: [[1, 2, 3], [4, 5, 6]],
+        this_index: -1,
         //basic_info:[],
-        rules:{//表单验证
-          [0]:{ validator: user_validate, trigger: 'blur' },
-          [1]:  { validator: mail_validate, trigger: 'blur' } ,
-          [2]: { validator: tel_validate, trigger: 'blur' } ,
+        rules: {
+          deptName: [{
+            required: true,
+            message: '部门名不能为空',
+            trigger: 'blur'
+          },
+            {
+              validator: rulesName,
+              trigger: 'blur'
+            }
+          ]
         },
-        dialogVisible:false,
-        is_disabled:true,
+        dialogVisible: false,
+        is_disabled: true,
+        id: '',
+        role: [],
+        permission: [],
+        show: false,
+        username: document.cookie,
+        userList: [],
+        editForm: [],
+        addForm: {
+          deptName: ''
+        },
+        editDialogVisible: false,
+        addDialogVisible: false
       }
     },
-    methods:{
-      edit_users(data){
-        this.this_index=data
-        this.dialogVisible=true
-        this.is_disabled=false
-      },
-      view_users(data){
-        this.this_index=data
-        this.dialogVisible=true
-        this.is_disabled=true
-      },
-      delete_users(data){
-        this.this_index=data
-        let that =this
-        axios.get(that.baseUrl+'http://182.92.66.200:8888/ssm-manage-system/user/delete',{//请求并且发送要删除的数据
-          params:{info:that.basic_info[that.this_index]}
-        }).then(response=>{//返回的状态码
-          let code=response.code
-          if(code === 3000){
-            alert('删除成功')
-            this.get_info()//界面更新
+    mounted() {
+      this.init()
+      this.getUserList()
+    },
+    methods: {
+      init() {
+        let that = this
+        this.$http.get('user/find', {
+          params: {
+            username: that.username
           }
-          else
-            alert('删除失败')
+        }).then(response => {
+          let data = response.data
+          that.id = data.data.id
+          that.role = data.data.roles
+          let permission = this.role[0].permissions
+          for (var x = 0; x < permission.length; x++) {
+            this.permission.push(permission[x].id)
+          }
+          this.show = true
         })
       },
-      get_info(){
-        let that=this
-        axios.get(that.baseurl+'/api/get_info',{//请求并且发送要获得的关键字
-          params:{info:that.input}
-        }).then(response=>{//返回的数据
-          that.basic_info=response.data
-          if(that.basic_info===null){
-            that.basic_info=''
-            this.$message.error('没有找到')
-          }
+      // 点击按钮，添加新部门
+      addDept () {
+        this.$refs.addFormRef.validate(async valid => {
+          if (!valid) return
+          // 可以发起添加用户的网络请求
+          await this.$http.get('dept/create', {
+            params: {
+              deptName: this.addForm.deptName
+            }
+          })
+          this.$message.success('添加部门成功')
+          // 隐藏添加用户的对话框
+          this.addDialogVisible = false
+          // 重新获取用户列表数据
+          this.getDeptList()
         })
       },
-      modify(){
-        if(this.is_disabled===true)//判断是否为编辑
-          return
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            alert('submit!');
-            this.dialogVisible = false
-            return true
-          } else {
-            this.$message.error('error submit!!');
-            return false;
+      // 获得部门列表
+      async getUserList() {
+        let that = this
+        const {data: res} = await this.$http.get('user/findAll', {
+          params: {
+            userId: that.id,
+            roleId: that.role[0].id
           }
         })
-        /*let that =this
-                      axios.get(that.baseurl+'/api/send_info',{//请求并且发送修改的数据
-                          params:{info:that.basic_info[that.this_index]}
-                      }).then(response=>{
-                          let code=response.code//返回的状态码
-                          if(code ===3000){
-                              alert('修改成功')
-                              this.get_info()//用于界面更新
-                          }
-                          else
-                              alert('修改失败')
-                      })*/
+        this.userList = res.data
+        console.log(this.userList)
+      },
+      // 展示编辑部门的对话框
+      async showEditDialog(id) {
+        const {data: res} = await this.$http.get('dept/find/' + id)
+        this.editForm = res.data
+        this.editDialogVisible = true
+      },
+      // 监听修改部门对话框的关闭事件
+      editDialogClosed() {
+        this.$refs.editFormRef.resetFields()
+      },
+      // 监听添加部门对话框的关闭事件
+      addDialogClosed () {
+        this.$refs.addFormRef.resetFields()
+      },
+      // 修改部门信息并提交
+      editDeptInfo() {
+        let that = this
+        this.$refs.editFormRef.validate(async valid => {
+          if (!valid) return
+          // 发起修改部门信息的数据请求
+          await this.$http.put('dept/modify', {
+            id: that.editForm.id,
+            deptName: that.editForm.deptName
+          })
+          // 关闭对话框
+          this.editDialogVisible = false
+          // 刷新数据列表
+          this.getDeptList()
+          // 提示修改成功
+          this.$message.success('更新部门信息成功！')
+        })
+      },
+      async removeDeptById(id) {
+        // 弹框询问用户是否删除数据
+        const confirmResult = await this.$confirm('此操作将永久删除该部门, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err => err)
+        // 如果用户确认删除，则返回值为字符串 confirm
+        // 如果用户取消了删除，则返回值为字符串 cancel
+        if (confirmResult !== 'confirm') {
+          return this.$message.info('已取消删除')
+        }
+        await this.$http.delete('dept/delete/' + id)
+        this.$message.success('删除部门成功！')
+        this.getDeptList()
       },
     }
   }
 </script>
 
 <style scoped>
-  .table_column{
-    height: 30px;
-    background-color: #87ebff;
-    margin-left: auto;
-    position: relative;
-    text-align: center;
-    width: 100%;
-  }
-  .out_div{
-    background-image: linear-gradient(to right,#fbc2eb,#a6c1ee);
-    height: 900px;
-  }
+
 </style>

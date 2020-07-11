@@ -8,6 +8,7 @@ import VueRouter from 'vue-router'
 import router from "./router";
 import './router/permission'
 
+axios.defaults.baseURL = 'http://localhost:8888/ssm_manage_system/'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.prototype.$echarts = echarts

@@ -59,4 +59,17 @@ public interface DeptService {
      * @param deptName
      */
     public void modifyDept(String id, String deptName);
+
+    /**
+     * 通过部门id来删除部门
+     * @param id
+     */
+    public void deleteDept(String id);
+
+    /**
+     * 根据部门id来查询部门信息
+     * @param id
+     * @return
+     */
+    public Dept findDeptById(String id);
 }
