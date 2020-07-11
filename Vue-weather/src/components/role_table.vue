@@ -11,27 +11,22 @@
                     type="index"
                     style="width: 20px">
                 <template slot-scope="scope">
-                    {{scope.$index+1}}
+                    {{scope.$index}}
                 </template>
             </el-table-column>
             <el-table-column
                     prop="[0]"
-                    label="姓名"
-                    width="100px">
-            </el-table-column>
-            <el-table-column
-                    prop="[1]"
                     label="邮箱"
                     width="200px">
             </el-table-column>
             <el-table-column
-                    prop="[2]"
-                    label="电话"
+                    prop="[1]"
+                    label="用户名"
                     width="150px">
             </el-table-column>
             <el-table-column
-                    prop="[3]"
-                    label="角色"
+                    prop="[2]"
+                    label="密码"
                     width="150px">
             </el-table-column>
             <el-table-column
@@ -53,17 +48,14 @@
                 v-if="this_index >= 0"
         >
             <el-form  :model="basic_info[this_index]" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名" prop="[0]">
+                <el-form-item label="邮箱" prop="[0]">
                     <el-input :disabled="is_disabled" v-model="basic_info[this_index][0]"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="[1]">
+                <el-form-item label="用户名" prop="[1]">
                     <el-input :disabled="is_disabled" v-model="basic_info[this_index][1]"></el-input>
                 </el-form-item>
-                <el-form-item label="电话" prop="[2]">
+                <el-form-item label="密码" prop="[2]">
                     <el-input :disabled="is_disabled" v-model="basic_info[this_index][2]"></el-input>
-                </el-form-item>
-                <el-form-item label="角色" prop="[3]">
-                    <el-input :disabled="is_disabled" v-model="basic_info[this_index][3]"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="dialogVisible = false">取 消</el-button>
@@ -78,7 +70,7 @@
     import axios from 'axios'
 
     export default {
-        name: "user-management.vue",
+        name: "role_table.vue",
         data(){
             var mail_validate = (rule, value, callback) => {
                 if (value.length === 0) {
@@ -101,24 +93,24 @@
                     callback()
                 }
             };
-            var tel_validate = (rule, value, callback) => {
+            var passward_validate = (rule, value, callback) =>{
                 console.log(value)
                 if (value === '') {
-                    callback(new Error('请输入电话号码'));
+                    callback(new Error('请输入密码'));
                 } else{
-                    if(value.length!=11)
-                        callback(new Error('电话号码必须为11位!'))
+                    if(value.length <5)
+                        callback(new Error('密码长度必须大于5'))
                     callback()
                 }
             };
             return {
-                basic_info:[[1,2,3,4],[5,6,7,8]],
+                basic_info:[[1,2,3],[4,5,6]],
                 this_index:-1,
                 //basic_info:[],
                 rules:{//表单验证
-                    [0]:{ validator: user_validate, trigger: 'blur' },
-                    [1]:  { validator: mail_validate, trigger: 'blur' } ,
-                    [2]: { validator: tel_validate, trigger: 'blur' } ,
+                    [0]:  { validator: mail_validate, trigger: 'blur' } ,
+                    [1]:{ validator: user_validate, trigger: 'blur' },
+                    [2]:{ validator: passward_validate, trigger: 'blur' }
                 },
                 dialogVisible:false,
                 is_disabled:true,
@@ -132,7 +124,7 @@
                 }}).then(response=>{
                 let data=response.data
                 that.role=data.data.roles
-
+                
             })
         },
         methods:{
