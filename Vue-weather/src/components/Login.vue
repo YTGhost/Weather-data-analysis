@@ -42,7 +42,7 @@
                         this.$message.error('密码错误')
                         return
                     }
-                    window.document.cookie = that.username
+                    document.cookie = this.username
                     let data = res.data
                     if (data.id === 1) {
                         that.$router.push('/home')
