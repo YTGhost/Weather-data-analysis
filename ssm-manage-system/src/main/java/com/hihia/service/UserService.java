@@ -50,4 +50,24 @@ public interface UserService {
      * @param id
      */
     public void deleteById(String id);
+
+    /**
+     * 系统管理员获取所有用户信息
+     * @return
+     */
+    public List<UserInfo> getUserInfoByRoot();
+
+    /**
+     * 普通管理员获取用户信息
+     * @return
+     */
+    public List<UserInfo> getUserInfoByAdmin(String userId);
+
+    /**
+     * 修改用户基本信息
+     * @param username
+     * @param password
+     * @param email
+     */
+    public void modifyUserInfo(String id, String username, String password, String email);
 }

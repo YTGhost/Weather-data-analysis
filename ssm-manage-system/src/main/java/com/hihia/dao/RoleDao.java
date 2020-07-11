@@ -63,12 +63,12 @@ public interface RoleDao {
      * @param roleId
      * @return
      */
-    @Select("select * from users_roles where userId=#{userId} and roleId=#{roleId}")
+    @Select("select * from users_roles where userId=#{userId}")
     @Results({
             @Result(property = "userId", column = "userId"),
             @Result(property = "roleId", column = "roleId")
     })
-    public User_Role checkRole(@Param("userId") String userId, @Param("roleId") String roleId);
+    public User_Role checkRole(@Param("userId") String userId);
 
     /**
      * 分配给用户角色
@@ -77,4 +77,7 @@ public interface RoleDao {
      */
     @Insert("insert into users_roles (userId, roleId) values (#{userId}, #{roleId})")
     public void assignRole(@Param("userId") String userId, @Param("roleId") String roleId);
+
+    @Update("update users_roles set roleId=#{roleId} where userId=#{userId}")
+    public void changeRole(@Param("userId") String userId, @Param("roleId") String roleId);
 }

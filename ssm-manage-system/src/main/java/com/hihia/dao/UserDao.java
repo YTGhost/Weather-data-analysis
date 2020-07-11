@@ -85,4 +85,38 @@ public interface UserDao {
      */
     @Delete("delete from users_roles where userId=#{id}")
     public void deleteRoleLinkById(String id);
+
+    /**
+     * 系统管理员获取所有用户信息
+     * @return
+     */
+    @Select("select * from users")
+    @Results({
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "username", column = "username"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "roles", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.RoleDao.findRoleByUserId")),
+            @Result(property = "depts", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.DeptDao.findDeptByUserId"))
+    })
+    public List<UserInfo> getUserInfoByRoot();
+
+    /**
+     * 普通管理员获取用户列表
+     * @param userId
+     * @return
+     */
+    @Select("select * from users")
+    @Results({
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "username", column = "username"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "roles", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.RoleDao.findRoleByUserId")),
+            @Result(property = "depts", column = "id", javaType = java.util.List.class, many = @Many(select = "com.hihia.dao.DeptDao.findDeptByUserId"))
+    })
+    public List<UserInfo> getUserInfoByAdmin(String userId);
+
+    @Select("update users set username=#{username}, password=#{password}, email=#{email} where id=#{id}")
+    public void modifyUserInfo(@Param("id") String id, @Param("username") String username, @Param("password") String password, @Param("email") String email);
 }

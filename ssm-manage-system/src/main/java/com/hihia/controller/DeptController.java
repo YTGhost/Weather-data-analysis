@@ -2,7 +2,6 @@ package com.hihia.controller;
 
 import com.hihia.domain.Dept;
 import com.hihia.domain.User_Dept;
-import com.hihia.domain.User_Role;
 import com.hihia.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,11 +28,46 @@ public class DeptController {
     @Autowired
     private DeptService deptService;
 
+//    @RequestMapping(value = "/delete")
+//    public Map<String, Object> deleteDept(String deptId){
+//
+//    }
+
+    @RequestMapping(value = "/modify", method = RequestMethod.PUT)
+    @ResponseBody
+    public Map<String, Object> modifyDept(Dept dept) {
+        String id = dept.getId().toString();
+        String deptName = dept.getDeptName();
+        deptService.modifyDept(id, deptName);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "修改成功");
+        map.put("data", null);
+        return map;
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> createDept(String deptName) {
+        Dept dept = deptService.checkDeptName(deptName);
+        Map<String, Object> map = new HashMap<>();
+        if (dept == null) {
+            deptService.createDept(deptName);
+            map.put("code", 1);
+            map.put("msg", "创建成功");
+            map.put("data", null);
+        } else {
+            map.put("code", 0);
+            map.put("msg", "该部门已存在");
+            map.put("data", null);
+        }
+        return map;
+    }
+
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> findAll() {
         List<Dept> depts = deptService.findAll();
-        System.out.println(depts);
         Map<String, Object> map = new HashMap<>();
         if (depts != null) {
             map.put("code", 1);
@@ -49,11 +83,11 @@ public class DeptController {
 
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> assignRole(User_Dept user_dept){
+    public Map<String, Object> assignRole(User_Dept user_dept) {
         String userId = user_dept.getUserId();
         String deptId = user_dept.getDeptId();
         User_Dept sign = deptService.checkDept(userId, deptId);
-        if(sign == null){
+        if (sign == null) {
             deptService.assignDept(userId, deptId);
         }
         Map<String, Object> map = new HashMap<>();

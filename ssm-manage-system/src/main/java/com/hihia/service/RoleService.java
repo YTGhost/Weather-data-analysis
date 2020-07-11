@@ -33,12 +33,19 @@ public interface RoleService {
     public List<Role> findRoleByRoleId(String id);
 
     /**
-     * 检查给用户分配的角色该用户是否已有
+     * 检查用户是否已经有角色
      * @param userId
-     * @param roleId
      * @return
      */
-    public User_Role checkRole(String userId, String roleId);
+    public User_Role checkRole(String userId);
 
+    /**
+     * 给没有角色的用户分配角色
+     * @param userId
+     * @param roleId
+     */
     public void assignRole(String userId, String roleId);
+
+
+    public void changeRole(String userId, String roleId);
 }
