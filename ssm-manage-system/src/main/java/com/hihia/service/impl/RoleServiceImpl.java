@@ -50,4 +50,14 @@ public class RoleServiceImpl implements RoleService {
     public void changeRole(String userId, String roleId) {
         roleDao.changeRole(userId, roleId);
     }
+
+    @Override
+    public void createRole(String roleName) {
+        roleDao.createRole(roleName);
+    }
+
+    @Override
+    public Role checkRoleName(String roleName) {
+        return roleDao.checkRoleName(roleName);
+    }
 }

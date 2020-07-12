@@ -46,6 +46,23 @@ public interface RoleService {
      */
     public void assignRole(String userId, String roleId);
 
-
+    /**
+     * 更改用户角色
+     * @param userId
+     * @param roleId
+     */
     public void changeRole(String userId, String roleId);
+
+    /**
+     * 创建角色
+     * @param deptName
+     */
+    public void createRole(String roleName);
+
+    /**
+     * 检查角色是否已创建
+     * @param roleName
+     * @return
+     */
+    public Role checkRoleName(String roleName);
 }
