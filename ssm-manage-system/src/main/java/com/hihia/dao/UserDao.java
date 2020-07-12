@@ -54,7 +54,7 @@ public interface UserDao {
      * 创建用户（基本信息）
      * @param userInfo
      */
-    @Select("insert into users(username, password, email) value(#{username}, #{password}, #{email})")
+    @Select("insert into users (username, password, email) value(#{username}, #{password}, #{email})")
     public void createUser(UserInfo userInfo);
 
     /**
@@ -119,4 +119,7 @@ public interface UserDao {
 
     @Select("update users set username=#{username}, password=#{password}, email=#{email} where id=#{id}")
     public void modifyUserInfo(@Param("id") String id, @Param("username") String username, @Param("password") String password, @Param("email") String email);
+
+    @Select("select * from users where id=#{id}")
+    public UserInfo findById(String id);
 }

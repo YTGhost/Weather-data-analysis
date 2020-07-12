@@ -55,7 +55,7 @@ public interface RoleService {
 
     /**
      * 创建角色
-     * @param deptName
+     * @param roleName
      */
     public void createRole(String roleName);
 
@@ -65,4 +65,24 @@ public interface RoleService {
      * @return
      */
     public Role checkRoleName(String roleName);
+
+    /**
+     * 修改角色信息
+     * @param id
+     * @param roleName
+     */
+    public void modifyRole(String id, String roleName);
+
+    /**
+     * 删除角色
+     * @param id
+     */
+    public void deleteRole(String id);
+
+    /**
+     * 通过角色id查找角色信息
+     * @param id
+     * @return
+     */
+    public Role findRoleById(String id);
 }

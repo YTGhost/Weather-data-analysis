@@ -98,7 +98,7 @@ public interface DeptDao {
      * 删除部门和用户之间的联系
      * @param id
      */
-    @Delete("delete from users_depts where userId=#{id}")
+    @Delete("delete from users_depts where deptId=#{id}")
     public void deleteDeptAsso(String id);
 
     @Select("select * from depts where id=#{id}")

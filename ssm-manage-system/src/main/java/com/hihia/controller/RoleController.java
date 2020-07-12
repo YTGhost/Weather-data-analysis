@@ -6,6 +6,7 @@ package com.hihia.controller;
  * @email 18221221@bjtu.edu.cn
  */
 
+import com.hihia.domain.Dept;
 import com.hihia.domain.Role;
 import com.hihia.domain.User_Role;
 import com.hihia.service.RoleService;
@@ -28,9 +29,20 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Map<String, Object> createRole(String roleName) {
+    public Map<String, Object> deleteRole(@PathVariable(name = "id") String id){
+        roleService.deleteRole(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "删除成功");
+        map.put("data", null);
+        return map;
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> createRole(@RequestParam(name = "roleName") String roleName) {
         Role role = roleService.checkRoleName(roleName);
         Map<String, Object> map = new HashMap<>();
         if(role == null){
@@ -53,8 +65,20 @@ public class RoleController {
      * @return
      */
     @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    @ResponseBody
     public List<Role> findRoleByUserId(@PathVariable(name = "id") String id) {
         return roleService.findRoleByUserId(id);
+    }
+
+    @RequestMapping(value = "/findRole/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> findRoleById(@PathVariable(name = "id") String id){
+        Role role = roleService.findRoleById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "查询成功");
+        map.put("data", role);
+        return map;
     }
 
     /**
@@ -81,10 +105,11 @@ public class RoleController {
 
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> assignRole(User_Role user_role) {
+    public Map<String, Object> assignRole(@RequestBody User_Role user_role) {
         String userId = user_role.getUserId();
         String roleId = user_role.getRoleId();
         User_Role sign = roleService.checkRole(userId);
+        System.out.println(sign);
         if (sign == null) {
             roleService.assignRole(userId, roleId);
         } else {
@@ -93,6 +118,36 @@ public class RoleController {
         Map<String, Object> map = new HashMap<>();
         map.put("code", 1);
         map.put("msg", "分配成功");
+        map.put("data", null);
+        return map;
+    }
+
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> checkDeptName(@RequestParam("roleName") String roleName){
+        Role role = roleService.checkRoleName(roleName);
+        Map<String, Object> map = new HashMap<>();
+        if (role == null) {
+            map.put("code", 1);
+            map.put("msg", "该角色不存在");
+            map.put("data", null);
+        } else {
+            map.put("code", 0);
+            map.put("msg", "该角色已存在");
+            map.put("data", null);
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/modify", method = RequestMethod.PUT)
+    @ResponseBody
+    public Map<String, Object> modifyRole(@RequestBody Role role) {
+        String id = role.getId().toString();
+        String roleName = role.getRoleName();
+        roleService.modifyRole(id, roleName);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "修改成功");
         map.put("data", null);
         return map;
     }

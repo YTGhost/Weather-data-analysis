@@ -12,22 +12,18 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'login',
         data() {
             return {
                 username: 'admin',
                 password: '123456',
-                baseUrl: 'http://182.92.66.200:8888/ssm-manage-system'
             }
         },
         methods: {
             login: function () {
-                //this.$router.push({path:`users/`+'1111'})
                 let that = this
-                //alert("登录"+this.username)
-                axios.get('http://182.92.66.200:8888/ssm-manage-system/user/find', {
+                this.$http.get('user/find', {
                     params: {
                         username: this.username
                     }
@@ -35,16 +31,17 @@
                     console.log(response.data)
                     let res = response.data
                     if (res.code === 0) {
-                        this.$message.error('账号错误')
+                        that.$message.error('账号错误')
                         return
                     }
                     if (that.password !== res.data.password) {
-                        this.$message.error('密码错误')
+                        that.$message.error('密码错误')
                         return
                     }
                     document.cookie = this.username
                     let data = res.data
                     if (data.id === 1) {
+                        that.$message.success('登录成功！')
                         that.$router.push('/home')
                         // router.push({name: '/home'})
                     }

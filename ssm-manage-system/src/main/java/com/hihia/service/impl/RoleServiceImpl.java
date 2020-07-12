@@ -60,4 +60,22 @@ public class RoleServiceImpl implements RoleService {
     public Role checkRoleName(String roleName) {
         return roleDao.checkRoleName(roleName);
     }
+
+    @Override
+    public void modifyRole(String id, String roleName) {
+        roleDao.modifyRole(id, roleName);
+    }
+
+    @Override
+    public void deleteRole(String id) {
+        roleDao.deleteRoleInfo(id);
+        roleDao.deleteRoleAssoUser(id);
+        roleDao.deleteRoleAssoMenu(id);
+        roleDao.deleteRoleAssoPermission(id);
+    }
+
+    @Override
+    public Role findRoleById(String id) {
+        return roleDao.findRoleById(id);
+    }
 }

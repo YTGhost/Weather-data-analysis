@@ -70,4 +70,11 @@ public interface UserService {
      * @param email
      */
     public void modifyUserInfo(String id, String username, String password, String email);
+
+    /**
+     * 查找指定id的用户
+     * @param id
+     * @return
+     */
+    public UserInfo findById(String id);
 }
