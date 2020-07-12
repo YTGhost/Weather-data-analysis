@@ -97,7 +97,7 @@ public class DeptController {
 
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> assignRole(User_Dept user_dept) {
+    public Map<String, Object> assignRole(@RequestBody User_Dept user_dept) {
         String userId = user_dept.getUserId();
         String deptId = user_dept.getDeptId();
         User_Dept sign = deptService.checkDept(userId, deptId);

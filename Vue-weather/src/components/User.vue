@@ -11,7 +11,7 @@
             <!--搜索与添加区域-->
             <el-row :gutter="20" style="margin-bottom: 10px">
                 <el-col :span="4">
-                    <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
+                    <el-button type="primary" @click="addDialogVisible = true" v-if="addShow">添加用户</el-button>
                 </el-col>
             </el-row>
 
@@ -23,22 +23,27 @@
                 <el-table-column label="邮箱" prop="email"></el-table-column>
                 <el-table-column label="部门" prop="depts[0].deptName"></el-table-column>
                 <el-table-column label="角色" prop="roles[0].roleName"></el-table-column>
-                <el-table-column label="操作" width="180px">
+                <el-table-column label="操作" width="240px">
                     <template slot-scope="scope">
                         <!--修改用户按钮-->
                         <el-tooltip effect="dark" content="修改用户" placement="top" :enterable="false">
                             <el-button type="primary" icon="el-icon-edit" size="mini"
-                                       @click="showEditDialog(scope.row.id)"></el-button>
+                                       @click="showEditDialog(scope.row.id)" v-if="modifyShow"></el-button>
                         </el-tooltip>
                         <!--删除用户按钮-->
                         <el-tooltip effect="dark" content="删除用户" placement="top" :enterable="false">
                             <el-button type="danger" icon="el-icon-delete" size="mini"
-                                       @click="removeUserById(scope.row.id)"></el-button>
+                                       @click="removeUserById(scope.row.id)" v-if="deleteShow"></el-button>
                         </el-tooltip>
                         <!--分配角色按钮-->
                         <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
                             <el-button type="warning" icon="el-icon-setting" size="mini"
-                                       @click="setRole(scope.row)"></el-button>
+                                       @click="setRole(scope.row)" v-if="assignRoleShow"></el-button>
+                        </el-tooltip>
+                        <!--分配部门-->
+                        <el-tooltip effect="dark" content="分配部门" placement="top" :enterable="false">
+                            <el-button type="warning" icon="el-icon-setting" size="mini"
+                                       @click="setDept(scope.row)" v-if="assignDeptShow"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -63,7 +68,7 @@
                 @close="addDialogClosed">
             <!--内容主体区-->
             <el-form :model="addForm" :rules="rules" ref="addFormRef" label-width="70px" class="demo-ruleForm">
-                <el-form-item label="用户名称" prop="username">
+                <el-form-item label="用户名" prop="username">
                     <el-input v-model="addForm.username"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
@@ -129,6 +134,31 @@
             <span slot="footer" class="dialog-footer">
                 <el-button @click="setRoleDialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+              </span>
+        </el-dialog>
+        <!--分配部门的对话框-->
+        <el-dialog
+                title="分配部门"
+                :visible.sync="setDeptDialogVisible"
+                width="50%"
+                @close="setDeptDialogClosed">
+            <div>
+                <p>当前的用户: {{userInfo.username}}</p>
+                <p>当前的部门: {{deptName}}</p>
+                <p>分配新部门:
+                    <el-select v-model="selectedDeptId" placeholder="请选择">
+                        <el-option
+                                v-for="item in deptsList"
+                                :key="item.id"
+                                :label="item.deptName"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </p>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="setDeptDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveDeptInfo">确 定</el-button>
               </span>
         </el-dialog>
     </div>
@@ -235,7 +265,16 @@
                 },
                 editDialogVisible: false,
                 addDialogVisible: false,
-                setRoleDialogVisible: false
+                setRoleDialogVisible: false,
+                modifyShow: false,
+                deleteShow: false,
+                assignRoleShow: false,
+                assignDeptShow: false,
+                addShow: false,
+                deptsList: [],
+                deptName: '',
+                setDeptDialogVisible: false,
+                selectedDeptId: ''
             }
         },
         mounted() {
@@ -255,6 +294,22 @@
                 let permission = this.role[0].permissions
                 for (var x = 0; x < permission.length; x++) {
                     this.permission.push(permission[x].id)
+                }
+                if(this.userId !== 1){
+                    for(let i = 0; i < this.permission.length; i++)
+                    {
+                        if(this.permission[i] === 1) this.modifyShow = true
+                        else if(this.permission[i] === 2) this.deleteShow = true
+                        else if(this.permission[i] === 3) this.assignRoleShow = true
+                        else if(this.permission[i] === 4) this.addShow = true
+                        else if(this.permission[i] === 12) this.assignDeptShow = true
+                    }
+                }else{
+                    this.modifyShow = true
+                    this.deleteShow = true
+                    this.assignDeptShow = true
+                    this.assignRoleShow = true
+                    this.addShow = true
                 }
                 this.show = true
                 this.getUserList()
@@ -342,7 +397,11 @@
                 const {data: res} = await this.$http.get('role/find')
                 this.rolesList = res.data
                 this.setRoleDialogVisible = true
-                this.roleName = this.userInfo.roles[0].roleName
+                if(this.userInfo.roles.length){
+                    this.roleName = this.userInfo.roles[0].roleName
+                }else{
+                    this.roleName = "该用户还未分配角色"
+                }
             },
             // 监听分配角色对话框的关闭事件
             setRoleDialogClosed () {
@@ -362,6 +421,36 @@
                 this.$message.success('更新角色成功！')
                 this.getUserList()
                 this.setRoleDialogVisible = false
+            },
+            async setDept(userInfo) {
+                this.userInfo = userInfo
+                const {data: res} = await this.$http.get('dept/find')
+                this.deptsList = res.data
+                this.setDeptDialogVisible = true
+                if(this.userInfo.depts.length){
+                    this.deptName = this.userInfo.depts[0].deptName
+                }else{
+                    this.deptName = "该用户还未分配部门"
+                }
+            },
+            // 监听分配角色对话框的关闭事件
+            setDeptDialogClosed () {
+                this.selectedDeptId = ''
+                this.deptName = ''
+                this.userInfo = {}
+            },
+            // 点击按钮，分配角色
+            async saveDeptInfo () {
+                if (!this.selectedDeptId) {
+                    return this.$message.error('请选择要分配的部门！')
+                }
+                await this.$http.post('dept/assign', {
+                    userId: this.userInfo.id,
+                    deptId: this.selectedDeptId
+                })
+                this.$message.success('更新角色成功！')
+                this.getUserList()
+                this.setDeptDialogVisible = false
             },
         }
     }

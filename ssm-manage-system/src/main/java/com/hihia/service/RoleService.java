@@ -1,5 +1,7 @@
 package com.hihia.service;
 
+import com.hihia.domain.Menu;
+import com.hihia.domain.Permission;
 import com.hihia.domain.Role;
 import com.hihia.domain.User_Role;
 
@@ -85,4 +87,18 @@ public interface RoleService {
      * @return
      */
     public Role findRoleById(String id);
+
+    /**
+     * 通过角色id获得权限列表
+     * @param id
+     * @return
+     */
+    public List<Permission> findPermissionByRoleId(String id);
+
+    /**
+     * 通过角色id获得菜单列表
+     * @param id
+     * @return
+     */
+    public List<Menu> findMenuByRoleId(String id);
 }

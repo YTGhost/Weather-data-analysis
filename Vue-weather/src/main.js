@@ -5,13 +5,15 @@ import axios from 'axios'
 import echarts from 'echarts'
 import 'echarts/map/js/china'
 import VueRouter from 'vue-router'
-import router from "./router";
+import router from "./router"
 import './router/permission'
+import TreeTable from 'vue-table-with-tree-grid'
 
 axios.defaults.baseURL = 'http://localhost:8888/ssm_manage_system/'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.prototype.$echarts = echarts
+Vue.component('tree-table', TreeTable)
 Vue.use(VueRouter)
 
 new Vue({

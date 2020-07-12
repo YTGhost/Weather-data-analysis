@@ -21,31 +21,26 @@
             }
         },
         methods: {
-            login: function () {
+            async login() {
                 let that = this
-                this.$http.get('user/find', {
+                const {data: res} = await this.$http.get('user/find', {
                     params: {
-                        username: this.username
-                    }
-                }).then(response => {
-                    console.log(response.data)
-                    let res = response.data
-                    if (res.code === 0) {
-                        that.$message.error('账号错误')
-                        return
-                    }
-                    if (that.password !== res.data.password) {
-                        that.$message.error('密码错误')
-                        return
-                    }
-                    document.cookie = this.username
-                    let data = res.data
-                    if (data.id === 1) {
-                        that.$message.success('登录成功！')
-                        that.$router.push('/home')
-                        // router.push({name: '/home'})
+                        username: that.username
                     }
                 })
+                if (res.code === 1) {
+                    if (res.data.password !== that.password) {
+                        that.$message.error("密码错误")
+                        return
+                    } else {
+                        that.$message.success("登录成功")
+                        document.cookie = that.username
+                        that.$router.push('/home')
+                    }
+                } else {
+                    that.$message.error("未找到该用户名")
+                    return
+                }
             },
         }
     }
