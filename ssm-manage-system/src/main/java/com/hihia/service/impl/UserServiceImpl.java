@@ -52,9 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(String id) {
-        userDao.deleteInfoById(id);
         userDao.deleteDeptLinkById(id);
         userDao.deleteRoleLinkById(id);
+        userDao.deleteInfoById(id);
     }
 
     @Override
@@ -80,5 +80,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyUserInfo(String id, String username, String password, String email) {
         userDao.modifyUserInfo(id, username, password, email);
+    }
+
+    @Override
+    public UserInfo findById(String id) {
+        return userDao.findById(id);
     }
 }

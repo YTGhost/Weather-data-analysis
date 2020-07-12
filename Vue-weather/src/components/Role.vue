@@ -11,25 +11,29 @@
             <!--搜索与添加区域-->
             <el-row :gutter="20" style="margin-bottom: 10px">
                 <el-col :span="4">
-                    <el-button type="primary" @click="addDialogVisible = true">添加部门</el-button>
+                    <el-button type="primary" @click="addDialogVisible = true">添加角色</el-button>
                 </el-col>
             </el-row>
 
             <!--角色列表区域-->
-            <el-table :data="deptList" border stripe>
+            <el-table :data="roleList" border stripe>
                 <el-table-column label="id" prop="id"></el-table-column>
-                <el-table-column label="部门名称" prop="deptName"></el-table-column>
+                <el-table-column label="角色名称" prop="roleName"></el-table-column>
                 <el-table-column label="操作" width="180px">
                     <template slot-scope="scope">
                         <!--修改按钮-->
-                        <el-tooltip effect="dark" content="修改部门" placement="top" :enterable="false">
+                        <el-tooltip effect="dark" content="修改角色" placement="top" :enterable="false">
                             <el-button type="primary" icon="el-icon-edit" size="mini"
                                        @click="showEditDialog(scope.row.id)"></el-button>
                         </el-tooltip>
                         <!--删除按钮-->
-                        <el-tooltip effect="dark" content="删除部门" placement="top" :enterable="false">
+                        <el-tooltip effect="dark" content="删除角色" placement="top" :enterable="false">
                             <el-button type="danger" icon="el-icon-delete" size="mini"
-                                       @click="removeDeptById(scope.row.id)"></el-button>
+                                       @click="removeRoleById(scope.row.id)"></el-button>
+                        </el-tooltip>
+                        <!--分配角色权限按钮-->
+                        <el-tooltip effect="dark" content="分配角色权限" placement="top" :enterable="false">
+                            <el-button type="warning" icon="el-icon-setting" size="mini" @click="setRole(scope.row)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -48,26 +52,26 @@
 
         <!--添加部门的对话框-->
         <el-dialog
-                title="添加部门"
+                title="添加角色"
                 :visible.sync="addDialogVisible"
                 width="50%"
                 @close="addDialogClosed">
             <!--内容主体区-->
             <el-form :model="addForm" :rules="rules" ref="addFormRef" label-width="70px" class="demo-ruleForm">
-                <el-form-item label="部门名称" prop="deptName">
-                    <el-input v-model="addForm.deptName"></el-input>
+                <el-form-item label="角色名称" prop="roleName">
+                    <el-input v-model="addForm.roleName"></el-input>
                 </el-form-item>
             </el-form>
             <!--底部区域-->
             <span slot="footer" class="dialog-footer">
                 <el-button @click="addDialogVisible= false">取 消</el-button>
-                <el-button type="primary" @click="addDept">确 定</el-button>
+                <el-button type="primary" @click="addRole">确 定</el-button>
             </span>
         </el-dialog>
 
         <!--修改用户的对话框-->
         <el-dialog
-                title="修改用户"
+                title="修改角色"
                 :visible.sync="editDialogVisible"
                 width="50%"
                 @close="editDialogClosed">
@@ -75,13 +79,13 @@
                 <el-form-item label="id">
                     <el-input v-model="editForm.id" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="部门名称" prop="deptName">
-                    <el-input v-model="editForm.deptName"></el-input>
+                <el-form-item label="角色名称" prop="roleName">
+                    <el-input v-model="editForm.roleName"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editDialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="editDeptInfo">确 定</el-button>
+                <el-button type="primary" @click="editRoleInfo">确 定</el-button>
               </span>
         </el-dialog>
 
@@ -114,14 +118,14 @@
 
 <script>
     export default {
-        name: "Dept",
+        name: "Role",
         data() {
-            // 校验部门是否存在
+            // 校验角色是否存在
             const rulesName = (rule, value, callback) => {
                 // 使用Axios进行校验
-                this.$http.get('dept/check', {
+                this.$http.get('role/check', {
                     params: {
-                        deptName: value
+                        roleName: value
                     }
                 })
                     .then((res => {
@@ -129,7 +133,7 @@
                         if (res.data.code === 1) {
                             callback()
                         } else {
-                            callback(new Error("部门已存在"))
+                            callback(new Error("角色已存在"))
                         }
                     }))
                     .catch((err) => {
@@ -142,9 +146,9 @@
                 this_index: -1,
                 //basic_info:[],
                 rules: {
-                    deptName: [{
+                    roleName: [{
                         required: true,
-                        message: '部门名不能为空',
+                        message: '角色名不能为空',
                         trigger: 'blur'
                     },
                         {
@@ -159,10 +163,10 @@
                 permission: [],
                 show: false,
                 username: document.cookie,
-                deptList: [],
+                roleList: [],
                 editForm: [],
                 addForm: {
-                    deptName: ''
+                    roleName: ''
                 },
                 editDialogVisible: false,
                 addDialogVisible: false
@@ -170,7 +174,7 @@
         },
         mounted() {
             this.init()
-            this.getDeptList()
+            this.getRoleList()
         },
         methods: {
             init() {
@@ -190,30 +194,30 @@
                 })
             },
             // 点击按钮，添加新部门
-            addDept () {
+            addRole () {
                 this.$refs.addFormRef.validate(async valid => {
                     if (!valid) return
                     // 可以发起添加用户的网络请求
-                    await this.$http.get('dept/create', {
+                    await this.$http.get('role/create', {
                         params: {
-                            deptName: this.addForm.deptName
+                            roleName: this.addForm.roleName
                         }
                     })
-                    this.$message.success('添加部门成功')
+                    this.$message.success('添加角色成功')
                     // 隐藏添加用户的对话框
                     this.addDialogVisible = false
                     // 重新获取用户列表数据
-                    this.getDeptList()
+                    this.getRoleList()
                 })
             },
             // 获得部门列表
-            async getDeptList() {
-                const {data: res} = await this.$http.get('dept/find')
-                this.deptList = res.data
+            async getRoleList() {
+                const {data: res} = await this.$http.get('role/find')
+                this.roleList = res.data
             },
             // 展示编辑部门的对话框
             async showEditDialog(id) {
-                const {data: res} = await this.$http.get('dept/find/' + id)
+                const {data: res} = await this.$http.get('role/findRole/' + id)
                 this.editForm = res.data
                 this.editDialogVisible = true
             },
@@ -225,27 +229,27 @@
             addDialogClosed () {
                 this.$refs.addFormRef.resetFields()
             },
-            // 修改部门信息并提交
-            editDeptInfo() {
+            // 修改角色信息并提交
+            editRoleInfo() {
                 let that = this
                 this.$refs.editFormRef.validate(async valid => {
                     if (!valid) return
                     // 发起修改部门信息的数据请求
-                    await this.$http.put('dept/modify', {
+                    await this.$http.put('role/modify', {
                         id: that.editForm.id,
-                        deptName: that.editForm.deptName
+                        roleName: that.editForm.roleName
                     })
                     // 关闭对话框
                     this.editDialogVisible = false
                     // 刷新数据列表
-                    this.getDeptList()
+                    this.getRoleList()
                     // 提示修改成功
-                    this.$message.success('更新部门信息成功！')
+                    this.$message.success('更新角色信息成功！')
                 })
             },
-            async removeDeptById(id) {
+            async removeRoleById(id) {
                 // 弹框询问用户是否删除数据
-                const confirmResult = await this.$confirm('此操作将永久删除该部门, 是否继续?', '提示', {
+                const confirmResult = await this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -255,9 +259,9 @@
                 if (confirmResult !== 'confirm') {
                     return this.$message.info('已取消删除')
                 }
-                await this.$http.delete('dept/delete/' + id)
-                this.$message.success('删除部门成功！')
-                this.getDeptList()
+                await this.$http.delete('role/delete/' + id)
+                this.$message.success('删除角色成功！')
+                this.getRoleList()
             },
         }
     }
