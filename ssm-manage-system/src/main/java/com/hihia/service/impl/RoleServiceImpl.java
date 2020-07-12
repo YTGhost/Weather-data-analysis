@@ -1,6 +1,10 @@
 package com.hihia.service.impl;
 
+import com.hihia.dao.MenusDao;
+import com.hihia.dao.PermissionDao;
 import com.hihia.dao.RoleDao;
+import com.hihia.domain.Menu;
+import com.hihia.domain.Permission;
 import com.hihia.domain.Role;
 import com.hihia.domain.User_Role;
 import com.hihia.service.RoleService;
@@ -20,6 +24,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private PermissionDao permissionDao;
+
+    @Autowired
+    private MenusDao menusDao;
 
     @Override
     public List<Role> findRoleByUserId(String id) {
@@ -68,14 +78,24 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void deleteRole(String id) {
-        roleDao.deleteRoleInfo(id);
         roleDao.deleteRoleAssoUser(id);
         roleDao.deleteRoleAssoMenu(id);
         roleDao.deleteRoleAssoPermission(id);
+        roleDao.deleteRoleInfo(id);
     }
 
     @Override
     public Role findRoleById(String id) {
         return roleDao.findRoleById(id);
+    }
+
+    @Override
+    public List<Permission> findPermissionByRoleId(String id) {
+        return permissionDao.findPermissionByRoleId(id);
+    }
+
+    @Override
+    public List<Menu> findMenuByRoleId(String id) {
+        return menusDao.findMenuByRoleId(id);
     }
 }

@@ -123,11 +123,17 @@ public class UserController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public Map<String, Object> deleteById(@PathVariable(name = "id") String id){
-        userService.deleteById(id);
         Map<String, Object> map = new HashMap<>();
-        map.put("code", 1);
-        map.put("msg", "删除成功");
-        map.put("data", null);
+        if("1".equals(id)){
+            map.put("code", 0);
+            map.put("msg", "删除失败");
+            map.put("data", null);
+        }else{
+            userService.deleteById(id);
+            map.put("code", 1);
+            map.put("msg", "删除成功");
+            map.put("data", null);
+        }
         return map;
     }
 

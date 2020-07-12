@@ -58,8 +58,8 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public void deleteDept(String id) {
-        deptDao.deleteDeptInfo(id);
         deptDao.deleteDeptAsso(id);
+        deptDao.deleteDeptInfo(id);
     }
 
     @Override

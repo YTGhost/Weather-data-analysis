@@ -11,7 +11,7 @@
             <!--搜索与添加区域-->
             <el-row :gutter="20" style="margin-bottom: 10px">
                 <el-col :span="4">
-                    <el-button type="primary" @click="addDialogVisible = true">添加部门</el-button>
+                    <el-button type="primary" @click="addDialogVisible = true" v-if="addShow">添加部门</el-button>
                 </el-col>
             </el-row>
 
@@ -24,12 +24,12 @@
                         <!--修改按钮-->
                         <el-tooltip effect="dark" content="修改部门" placement="top" :enterable="false">
                             <el-button type="primary" icon="el-icon-edit" size="mini"
-                                       @click="showEditDialog(scope.row.id)"></el-button>
+                                       @click="showEditDialog(scope.row.id)" v-if="modifyShow"></el-button>
                         </el-tooltip>
                         <!--删除按钮-->
                         <el-tooltip effect="dark" content="删除部门" placement="top" :enterable="false">
                             <el-button type="danger" icon="el-icon-delete" size="mini"
-                                       @click="removeDeptById(scope.row.id)"></el-button>
+                                       @click="removeDeptById(scope.row.id)" v-if="deleteShow"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -54,7 +54,7 @@
                 @close="addDialogClosed">
             <!--内容主体区-->
             <el-form :model="addForm" :rules="rules" ref="addFormRef" label-width="70px" class="demo-ruleForm">
-                <el-form-item label="部门名称" prop="deptName">
+                <el-form-item label="部门名" prop="deptName">
                     <el-input v-model="addForm.deptName"></el-input>
                 </el-form-item>
             </el-form>
@@ -75,7 +75,7 @@
                 <el-form-item label="id">
                     <el-input v-model="editForm.id" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="部门名称" prop="deptName">
+                <el-form-item label="部门名" prop="deptName">
                     <el-input v-model="editForm.deptName"></el-input>
                 </el-form-item>
             </el-form>
@@ -84,31 +84,6 @@
                 <el-button type="primary" @click="editDeptInfo">确 定</el-button>
               </span>
         </el-dialog>
-
-        <!--        &lt;!&ndash;分配角色的对话框&ndash;&gt;-->
-        <!--        <el-dialog-->
-        <!--                title="分配角色"-->
-        <!--                :visible.sync="setRoleDialogVisible"-->
-        <!--                width="50%"-->
-        <!--                @close="setRoleDialogClosed">-->
-        <!--            <div>-->
-        <!--                <p>当前的用户: {{userInfo.username}}</p>-->
-        <!--                <p>当前的角色: {{userInfo.role_name}}</p>-->
-        <!--                <p>分配新角色:-->
-        <!--                    <el-select v-model="selectedRoleId" placeholder="请选择">-->
-        <!--                        <el-option-->
-        <!--                                v-for="item in rolesList"-->
-        <!--                                :key="item.id"-->
-        <!--                                :label="item.roleName"-->
-        <!--                                :value="item.id">-->
-        <!--                        </el-option>-->
-        <!--                    </el-select></p>-->
-        <!--            </div>-->
-        <!--            <span slot="footer" class="dialog-footer">-->
-        <!--        <el-button @click="setRoleDialogVisible = false">取 消</el-button>-->
-        <!--        <el-button type="primary" @click="saveRoleInfo">确 定</el-button>-->
-        <!--      </span>-->
-        <!--        </el-dialog>-->
     </div>
 </template>
 
@@ -165,7 +140,10 @@
                     deptName: ''
                 },
                 editDialogVisible: false,
-                addDialogVisible: false
+                addDialogVisible: false,
+                modifyShow: false,
+                deleteShow: false,
+                addShow: false
             }
         },
         mounted() {
@@ -173,21 +151,33 @@
             this.getDeptList()
         },
         methods: {
-            init() {
+            async init() {
                 let that = this
-                this.$http.get('user/find', {
+                const {data: res} = await this.$http.get('user/find', {
                     params: {
                         username: that.username
                     }
-                }).then(response => {
-                    let data = response.data
-                    that.role = data.data.roles
-                    let permission = this.role[0].permissions
-                    for (var x = 0; x < permission.length; x++) {
-                        this.permission.push(permission[x].id)
-                    }
-                    this.show = true
                 })
+                this.userId = res.data.id
+                this.roleId = res.data.roles[0].id
+                this.role = res.data.roles
+                let permission = this.role[0].permissions
+                for (var x = 0; x < permission.length; x++) {
+                    this.permission.push(permission[x].id)
+                }
+                if(this.userId !== 1){
+                    for(let i = 0; i < this.permission.length; i++)
+                    {
+                        if(this.permission[i] === 5) this.modifyShow = true
+                        else if(this.permission[i] === 6) this.deleteShow = true
+                        else if(this.permission[i] === 7) this.addShow = true
+                    }
+                }else{
+                    this.modifyShow = true
+                    this.deleteShow = true
+                    this.addShow = true
+                }
+                this.show = true
             },
             // 点击按钮，添加新部门
             addDept () {

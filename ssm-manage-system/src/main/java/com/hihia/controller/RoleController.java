@@ -6,9 +6,7 @@ package com.hihia.controller;
  * @email 18221221@bjtu.edu.cn
  */
 
-import com.hihia.domain.Dept;
-import com.hihia.domain.Role;
-import com.hihia.domain.User_Role;
+import com.hihia.domain.*;
 import com.hihia.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -150,5 +148,17 @@ public class RoleController {
         map.put("msg", "修改成功");
         map.put("data", null);
         return map;
+    }
+
+    @RequestMapping(value = "/getPermissions/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Permission> findPermissionsById(@PathVariable(name = "id") String id){
+        return roleService.findPermissionByRoleId(id);
+    }
+
+    @RequestMapping(value = "/getMenus/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Menu> findMenuByRoleId(@PathVariable(name = "id") String id){
+        return roleService.findMenuByRoleId(id);
     }
 }

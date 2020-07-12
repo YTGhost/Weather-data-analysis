@@ -1,5 +1,6 @@
 package com.hihia.service;
 
+import com.hihia.domain.Menu;
 import com.hihia.domain.Permission;
 
 import java.util.List;
@@ -12,4 +13,10 @@ import java.util.List;
 public interface PermissionService {
 
     public List<Permission> findPermissionByRoleId(String id);
+
+    public List<Permission> findAll();
+
+    public void assignPower(String roleId, String permissionId);
+
+    public void deletePower(String roleId, String permissionId);
 }
