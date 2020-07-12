@@ -59,7 +59,7 @@
                 @close="addDialogClosed">
             <!--内容主体区-->
             <el-form :model="addForm" :rules="rules" ref="addFormRef" label-width="70px" class="demo-ruleForm">
-                <el-form-item label="角色名称" prop="roleName">
+                <el-form-item label="角色名" prop="roleName">
                     <el-input v-model="addForm.roleName"></el-input>
                 </el-form-item>
             </el-form>
@@ -80,7 +80,7 @@
                 <el-form-item label="id">
                     <el-input v-model="editForm.id" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="角色名称" prop="roleName">
+                <el-form-item label="角色名" prop="roleName">
                     <el-input v-model="editForm.roleName"></el-input>
                 </el-form-item>
             </el-form>

@@ -9,7 +9,7 @@ import router from "./router"
 import './router/permission'
 import TreeTable from 'vue-table-with-tree-grid'
 
-axios.defaults.baseURL = 'http://localhost:8888/ssm_manage_system/'
+axios.defaults.baseURL = 'https://www.hihia.top/vue-manage-api/'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.prototype.$echarts = echarts
