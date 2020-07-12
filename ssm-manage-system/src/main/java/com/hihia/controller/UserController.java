@@ -35,9 +35,10 @@ public class UserController {
     private RoleService roleService;
 
 
-    @RequestMapping(value = "/modify/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/modify", method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> modifyUserInfo(@PathVariable(name = "id") String id, UserInfo userInfo){
+    public Map<String, Object> modifyUserInfo(@RequestBody UserInfo userInfo){
+        String id = userInfo.getId().toString();
         String username = userInfo.getUsername();
         String password = userInfo.getPassword();
         String email = userInfo.getEmail();
@@ -102,7 +103,7 @@ public class UserController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> createUser(UserInfo userInfo){
+    public Map<String, Object> createUser(@RequestBody UserInfo userInfo){
         userService.createUser(userInfo);
         String id = userService.findIdByUsername(userInfo.getUsername());
         // 创建用户时都默认为普通用户
@@ -122,11 +123,17 @@ public class UserController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public Map<String, Object> deleteById(@PathVariable(name = "id") String id){
-        userService.deleteById(id);
         Map<String, Object> map = new HashMap<>();
-        map.put("code", 1);
-        map.put("msg", "删除成功");
-        map.put("data", null);
+        if("1".equals(id)){
+            map.put("code", 0);
+            map.put("msg", "删除失败");
+            map.put("data", null);
+        }else{
+            userService.deleteById(id);
+            map.put("code", 1);
+            map.put("msg", "删除成功");
+            map.put("data", null);
+        }
         return map;
     }
 
@@ -172,6 +179,17 @@ public class UserController {
             map.put("msg", "该邮箱不存在");
             map.put("data", null);
         }
+        return map;
+    }
+
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> findById(@PathVariable(name = "id") String id){
+        UserInfo userInfo = userService.findById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "查询成功");
+        map.put("data", userInfo);
         return map;
     }
 }

@@ -12,4 +12,10 @@ import java.util.List;
 public interface MenuService {
 
     public List<Menu> findMenuByRoleId(String id);
+
+    public List<Menu> findAll();
+
+    public void assignPower(String roleId, String menuId);
+
+    public void deletePower(String roleId, String menuId);
 }

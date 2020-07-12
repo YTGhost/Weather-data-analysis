@@ -5,10 +5,7 @@ import com.hihia.domain.User_Dept;
 import com.hihia.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,14 +25,20 @@ public class DeptController {
     @Autowired
     private DeptService deptService;
 
-//    @RequestMapping(value = "/delete")
-//    public Map<String, Object> deleteDept(String deptId){
-//
-//    }
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Map<String, Object> deleteDept(@PathVariable(name = "id") String id){
+        deptService.deleteDept(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "删除成功");
+        map.put("data", null);
+        return map;
+    }
 
     @RequestMapping(value = "/modify", method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, Object> modifyDept(Dept dept) {
+    public Map<String, Object> modifyDept(@RequestBody Dept dept) {
         String id = dept.getId().toString();
         String deptName = dept.getDeptName();
         deptService.modifyDept(id, deptName);
@@ -46,9 +49,9 @@ public class DeptController {
         return map;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> createDept(String deptName) {
+    public Map<String, Object> createDept(@RequestParam(name = "deptName") String deptName) {
         Dept dept = deptService.checkDeptName(deptName);
         Map<String, Object> map = new HashMap<>();
         if (dept == null) {
@@ -75,15 +78,26 @@ public class DeptController {
             map.put("data", depts);
         } else {
             map.put("code", 0);
-            map.put("msg", "没有查询到角色列表");
+            map.put("msg", "查询失败");
             map.put("data", null);
         }
         return map;
     }
 
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> findDeptById(@PathVariable(name = "id") String id){
+        Dept dept = deptService.findDeptById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 1);
+        map.put("msg", "查询成功");
+        map.put("data", dept);
+        return map;
+    }
+
     @RequestMapping(value = "/assign", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> assignRole(User_Dept user_dept) {
+    public Map<String, Object> assignRole(@RequestBody User_Dept user_dept) {
         String userId = user_dept.getUserId();
         String deptId = user_dept.getDeptId();
         User_Dept sign = deptService.checkDept(userId, deptId);
@@ -94,6 +108,24 @@ public class DeptController {
         map.put("code", 1);
         map.put("msg", "分配成功");
         map.put("data", null);
+        return map;
+    }
+
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> checkDeptName(@RequestParam("deptName") String deptName){
+        System.out.println(deptName);
+        Dept dept = deptService.checkDeptName(deptName);
+        Map<String, Object> map = new HashMap<>();
+        if (dept == null) {
+            map.put("code", 1);
+            map.put("msg", "该部门不存在");
+            map.put("data", null);
+        } else {
+            map.put("code", 0);
+            map.put("msg", "该部门已存在");
+            map.put("data", null);
+        }
         return map;
     }
 }

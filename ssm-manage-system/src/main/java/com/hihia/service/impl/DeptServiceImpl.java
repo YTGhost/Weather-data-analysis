@@ -55,4 +55,15 @@ public class DeptServiceImpl implements DeptService {
     public void modifyDept(String id, String deptName) {
         deptDao.modifyDept(id, deptName);
     }
+
+    @Override
+    public void deleteDept(String id) {
+        deptDao.deleteDeptAsso(id);
+        deptDao.deleteDeptInfo(id);
+    }
+
+    @Override
+    public Dept findDeptById(String id) {
+        return deptDao.findDeptById(id);
+    }
 }

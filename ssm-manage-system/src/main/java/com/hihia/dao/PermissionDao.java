@@ -1,6 +1,10 @@
 package com.hihia.dao;
 
 import com.hihia.domain.Permission;
+import com.hihia.domain.Role_Permission;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +26,16 @@ public interface PermissionDao {
      */
     @Select("select * from permissions where id in (select permissionId from roles_permissions where roleId=#{id})")
     public List<Permission> findPermissionByRoleId(String id);
+
+    @Select("select * from permissions")
+    public List<Permission> findAll();
+
+    @Select("select * from roles_permissions where roleId=#{roleId} and permissionId=#{permissionId}")
+    public Role_Permission checkPermission(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
+
+    @Insert("insert into roles_permissions (roleId, permissionId) value(#{roleId}, #{permissionId})")
+    public void assignPower(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
+
+    @Delete("delete from roles_permissions where roleId=#{roleId} and permissionId=#{permissionId}")
+    public void deletePower(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
 }

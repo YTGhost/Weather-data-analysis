@@ -78,6 +78,70 @@ public interface RoleDao {
     @Insert("insert into users_roles (userId, roleId) values (#{userId}, #{roleId})")
     public void assignRole(@Param("userId") String userId, @Param("roleId") String roleId);
 
+    /**
+     * 更改用户角色
+     * @param userId
+     * @param roleId
+     */
     @Update("update users_roles set roleId=#{roleId} where userId=#{userId}")
     public void changeRole(@Param("userId") String userId, @Param("roleId") String roleId);
+
+    /**
+     * 检查角色是否已经被创建
+     * @param roleName
+     * @return
+     */
+    @Select("select * from roles where roleName=#{roleName}")
+    public Role checkRoleName(String roleName);
+
+    /**
+     * 创建角色
+     * @param roleName
+     */
+    @Insert("insert into roles (roleName) values (#{roleName})")
+    public void createRole(String roleName);
+
+    /**
+     * 修改角色信息
+     * @param id
+     * @param roleName
+     */
+    @Update("update roles set roleName=#{roleName} where id=#{id}")
+    public void modifyRole(@Param("id") String id, @Param("roleName") String roleName);
+
+    /**
+     * 删除角色基本信息
+     * @param id
+     */
+    @Delete("delete from roles where id=#{id}")
+    public void deleteRoleInfo(String id);
+
+    /**
+     * 删除角色与用户的联系
+     * @param id
+     */
+    @Delete("delete from users_roles where roleId=#{id}")
+    public void deleteRoleAssoUser(String id);
+
+    /**
+     * 删除角色与菜单权限的联系
+     * @param id
+     */
+    @Delete("delete from roles_menus where roleId=#{id}")
+    public void deleteRoleAssoMenu(String id);
+
+    /**
+     * 删除角色与权限之间的联系
+     * @param id
+     */
+    @Delete("delete from roles_permissions where roleId=#{id}")
+    public void deleteRoleAssoPermission(String id);
+
+    /**
+     * 通过角色id查找角色相应信息
+     * @param id
+     * @return
+     */
+    @Select("select * from roles where id=#{id}")
+    public Role findRoleById(String id);
 }

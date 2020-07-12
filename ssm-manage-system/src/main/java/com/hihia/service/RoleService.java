@@ -1,5 +1,7 @@
 package com.hihia.service;
 
+import com.hihia.domain.Menu;
+import com.hihia.domain.Permission;
 import com.hihia.domain.Role;
 import com.hihia.domain.User_Role;
 
@@ -46,6 +48,57 @@ public interface RoleService {
      */
     public void assignRole(String userId, String roleId);
 
-
+    /**
+     * 更改用户角色
+     * @param userId
+     * @param roleId
+     */
     public void changeRole(String userId, String roleId);
+
+    /**
+     * 创建角色
+     * @param roleName
+     */
+    public void createRole(String roleName);
+
+    /**
+     * 检查角色是否已创建
+     * @param roleName
+     * @return
+     */
+    public Role checkRoleName(String roleName);
+
+    /**
+     * 修改角色信息
+     * @param id
+     * @param roleName
+     */
+    public void modifyRole(String id, String roleName);
+
+    /**
+     * 删除角色
+     * @param id
+     */
+    public void deleteRole(String id);
+
+    /**
+     * 通过角色id查找角色信息
+     * @param id
+     * @return
+     */
+    public Role findRoleById(String id);
+
+    /**
+     * 通过角色id获得权限列表
+     * @param id
+     * @return
+     */
+    public List<Permission> findPermissionByRoleId(String id);
+
+    /**
+     * 通过角色id获得菜单列表
+     * @param id
+     * @return
+     */
+    public List<Menu> findMenuByRoleId(String id);
 }
