@@ -18,3 +18,22 @@
 李原苇 18301045	用户名：a2432014058
 
 王玉月 18301024	用户名：1677490
+
+## 项目目录
+
+ARIMA、ARIMA_only_min和LSTM是这次项目的两个算法模型
+
+Weather-server是flask后端程序
+
+Vue-weather是前端Vue项目
+
+ssm-manage-system是后端ssm项目
+
+pyspark_study是关于pyspark学习的jupyter notebook笔记程序
+
+worklog是小组成员每日的工作日志
+
+report包括组长每日编写的小组总结，中期、终期答辩ppt，以及整个项目的相关文档
+
+json处理 webSocket是关于使用python进行json处理和websocket通信的类
+
